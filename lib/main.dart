@@ -25,67 +25,65 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return VsyncProvider(
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: StateNotifierProvider<HomeStateNotifier, HomeState>(
-          child: Scaffold(
-              bottomNavigationBar: BottomNavigationBar(
-                onTap: (int page) {
-                  if (page == 1) {
-                  //  context.read<HomeState>().animationController.forward();
-                  } else {
-                  //  context.read<HomeState>().animationController.reverse();
-                  }
-                },
-                items: [
-                  new BottomNavigationBarItem(
-                      icon: Icon(Icons.home),
-                      title: Text("Home")
-                  ),
-                  new BottomNavigationBarItem(
-                      icon: Icon(Icons.settings),
-                      title: Text("Setting")
-                  ),
-                ],
-              ),
-              body: StateNotifierProvider<PointerStateNotifier, PointerState>(
-                child: Stack(
-                  children: <Widget>[
-                    StateNotifierProvider<CameraStateNotifier, CameraState>(
-                      child: const Preview(),
-                      create: (BuildContext context) => CameraStateNotifier(),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                        child: ChangePointerPositionButtons(),
-                      //child: context.select((HomeState s) {
-                      //  return SlideTransition(
-                      //    position: s.animationOffset,
-                      //    child: ChangePointerPositionButtons(),
-                      //  );
-                      //}
-                      ),
-                    //),
-                    PositionablePointer(),
-                  ],
-                ),
-                create: (BuildContext context) => PointerStateNotifier(),
-              )),
-          create: (BuildContext context) {
+    return MultiProvider(
+        providers: [
+          VsyncProvider(),
+          StateNotifierProvider<HomeStateNotifier, HomeState>(
+              create: (BuildContext context) {
             final stateNotifier = HomeStateNotifier();
             stateNotifier.setPage(0);
-            final controller = AnimationController(vsync: VsyncProvider.of(context), duration: Duration(seconds: 1));
+            final controller = AnimationController(
+                vsync: VsyncProvider.of(context),
+                duration: Duration(seconds: 1));
             stateNotifier.setAnimationParameter(
-                controller,
-                Tween<Offset>(begin: Offset.zero, end: Offset(0.0, 1.0)).animate(controller),
+              controller,
+              Tween<Offset>(begin: Offset.zero, end: Offset(0.0, 1.0))
+                  .animate(controller),
             );
             return stateNotifier;
-          },
-        ),
+          }),
+          StateNotifierProvider<PointerStateNotifier, PointerState>(
+              create: (BuildContext context) => PointerStateNotifier()),
+          StateNotifierProvider<CameraStateNotifier, CameraState>(
+              create: (BuildContext context) => CameraStateNotifier()),
+        ],
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: DotSiteHome(),
+        ));
+  }
+}
+
+class DotSiteHome extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (int page) {
+          if (page == 1) {
+            context.read<HomeState>().animationController.forward();
+          } else {
+            context.read<HomeState>().animationController.reverse();
+          }
+        },
+        items: [
+          new BottomNavigationBarItem(
+              icon: Icon(Icons.home), title: Text("Home")),
+          new BottomNavigationBarItem(
+              icon: Icon(Icons.settings), title: Text("Setting")),
+        ],
+      ),
+      body: Stack(
+        children: <Widget>[
+          const Preview(),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: AnimatedChangePointerPositionButtons()),
+          PositionablePointer(),
+        ],
       ),
     );
   }
@@ -94,8 +92,10 @@ class MyApp extends StatelessWidget {
 class AnimatedChangePointerPositionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return null;
+    return context.select((HomeState s) {
+      return SlideTransition(
+          position: s.animationOffset, child: ChangePointerPositionButtons());
+    });
   }
 }
 
@@ -114,9 +114,7 @@ class ChangePointerPositionButtons extends StatelessWidget {
                 onPressed: () {
                   context.read<PointerStateNotifier>().minusOneTop();
                 },
-              )
-          )
-      ),
+              ))),
       Expanded(
           flex: 1,
           child: Container(
@@ -128,9 +126,7 @@ class ChangePointerPositionButtons extends StatelessWidget {
                 onPressed: () {
                   context.read<PointerStateNotifier>().plusOneTop();
                 },
-              )
-          )
-      ),
+              ))),
       Expanded(
           flex: 1,
           child: Container(
@@ -142,9 +138,7 @@ class ChangePointerPositionButtons extends StatelessWidget {
                 onPressed: () {
                   context.read<PointerStateNotifier>().minusOneLeft();
                 },
-              )
-          )
-      ),
+              ))),
       Expanded(
           flex: 1,
           child: Container(
@@ -156,9 +150,7 @@ class ChangePointerPositionButtons extends StatelessWidget {
                 onPressed: () {
                   context.read<PointerStateNotifier>().plusOneLeft();
                 },
-              )
-          )
-      ),
+              ))),
     ]);
   }
 }
