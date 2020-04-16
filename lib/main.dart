@@ -34,11 +34,10 @@ class MyApp extends StatelessWidget {
             stateNotifier.setPage(0);
             final controller = AnimationController(
                 vsync: VsyncProvider.of(context),
-                duration: Duration(seconds: 1));
+                duration: Duration(milliseconds: 150));
             stateNotifier.setAnimationParameter(
               controller,
-              Tween<Offset>(begin: Offset.zero, end: Offset(0.0, 1.0))
-                  .animate(controller),
+                MaterialPointArcTween(begin: Offset.zero, end: Offset(0.0, 1)).animate(controller)
             );
             return stateNotifier;
           }),
