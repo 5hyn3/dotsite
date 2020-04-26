@@ -15,15 +15,11 @@ class _$HomeStateTearOff {
   _HomeState call(
       {int page = 0,
       @nullable AnimationController animationController,
-      @nullable Animation<Offset> animationOffset,
-      @nullable AnimationController animationControllerB,
-      @nullable Animation<Offset> animationOffsetB}) {
+      @nullable Animation<Offset> animationOffset}) {
     return _HomeState(
       page: page,
       animationController: animationController,
       animationOffset: animationOffset,
-      animationControllerB: animationControllerB,
-      animationOffsetB: animationOffsetB,
     );
   }
 }
@@ -37,10 +33,6 @@ mixin _$HomeState {
   AnimationController get animationController;
   @nullable
   Animation<Offset> get animationOffset;
-  @nullable
-  AnimationController get animationControllerB;
-  @nullable
-  Animation<Offset> get animationOffsetB;
 
   $HomeStateCopyWith<HomeState> get copyWith;
 }
@@ -51,9 +43,7 @@ abstract class $HomeStateCopyWith<$Res> {
   $Res call(
       {int page,
       @nullable AnimationController animationController,
-      @nullable Animation<Offset> animationOffset,
-      @nullable AnimationController animationControllerB,
-      @nullable Animation<Offset> animationOffsetB});
+      @nullable Animation<Offset> animationOffset});
 }
 
 class _$HomeStateCopyWithImpl<$Res> implements $HomeStateCopyWith<$Res> {
@@ -68,8 +58,6 @@ class _$HomeStateCopyWithImpl<$Res> implements $HomeStateCopyWith<$Res> {
     Object page = freezed,
     Object animationController = freezed,
     Object animationOffset = freezed,
-    Object animationControllerB = freezed,
-    Object animationOffsetB = freezed,
   }) {
     return _then(_value.copyWith(
       page: page == freezed ? _value.page : page as int,
@@ -79,12 +67,6 @@ class _$HomeStateCopyWithImpl<$Res> implements $HomeStateCopyWith<$Res> {
       animationOffset: animationOffset == freezed
           ? _value.animationOffset
           : animationOffset as Animation<Offset>,
-      animationControllerB: animationControllerB == freezed
-          ? _value.animationControllerB
-          : animationControllerB as AnimationController,
-      animationOffsetB: animationOffsetB == freezed
-          ? _value.animationOffsetB
-          : animationOffsetB as Animation<Offset>,
     ));
   }
 }
@@ -97,9 +79,7 @@ abstract class _$HomeStateCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
   $Res call(
       {int page,
       @nullable AnimationController animationController,
-      @nullable Animation<Offset> animationOffset,
-      @nullable AnimationController animationControllerB,
-      @nullable Animation<Offset> animationOffsetB});
+      @nullable Animation<Offset> animationOffset});
 }
 
 class __$HomeStateCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
@@ -115,8 +95,6 @@ class __$HomeStateCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
     Object page = freezed,
     Object animationController = freezed,
     Object animationOffset = freezed,
-    Object animationControllerB = freezed,
-    Object animationOffsetB = freezed,
   }) {
     return _then(_HomeState(
       page: page == freezed ? _value.page : page as int,
@@ -126,12 +104,6 @@ class __$HomeStateCopyWithImpl<$Res> extends _$HomeStateCopyWithImpl<$Res>
       animationOffset: animationOffset == freezed
           ? _value.animationOffset
           : animationOffset as Animation<Offset>,
-      animationControllerB: animationControllerB == freezed
-          ? _value.animationControllerB
-          : animationControllerB as AnimationController,
-      animationOffsetB: animationOffsetB == freezed
-          ? _value.animationOffsetB
-          : animationOffsetB as Animation<Offset>,
     ));
   }
 }
@@ -140,9 +112,7 @@ class _$_HomeState implements _HomeState {
   const _$_HomeState(
       {this.page = 0,
       @nullable this.animationController,
-      @nullable this.animationOffset,
-      @nullable this.animationControllerB,
-      @nullable this.animationOffsetB})
+      @nullable this.animationOffset})
       : assert(page != null);
 
   @JsonKey(defaultValue: 0)
@@ -154,16 +124,10 @@ class _$_HomeState implements _HomeState {
   @override
   @nullable
   final Animation<Offset> animationOffset;
-  @override
-  @nullable
-  final AnimationController animationControllerB;
-  @override
-  @nullable
-  final Animation<Offset> animationOffsetB;
 
   @override
   String toString() {
-    return 'HomeState(page: $page, animationController: $animationController, animationOffset: $animationOffset, animationControllerB: $animationControllerB, animationOffsetB: $animationOffsetB)';
+    return 'HomeState(page: $page, animationController: $animationController, animationOffset: $animationOffset)';
   }
 
   @override
@@ -177,13 +141,7 @@ class _$_HomeState implements _HomeState {
                     .equals(other.animationController, animationController)) &&
             (identical(other.animationOffset, animationOffset) ||
                 const DeepCollectionEquality()
-                    .equals(other.animationOffset, animationOffset)) &&
-            (identical(other.animationControllerB, animationControllerB) ||
-                const DeepCollectionEquality().equals(
-                    other.animationControllerB, animationControllerB)) &&
-            (identical(other.animationOffsetB, animationOffsetB) ||
-                const DeepCollectionEquality()
-                    .equals(other.animationOffsetB, animationOffsetB)));
+                    .equals(other.animationOffset, animationOffset)));
   }
 
   @override
@@ -191,9 +149,7 @@ class _$_HomeState implements _HomeState {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(page) ^
       const DeepCollectionEquality().hash(animationController) ^
-      const DeepCollectionEquality().hash(animationOffset) ^
-      const DeepCollectionEquality().hash(animationControllerB) ^
-      const DeepCollectionEquality().hash(animationOffsetB);
+      const DeepCollectionEquality().hash(animationOffset);
 
   @override
   _$HomeStateCopyWith<_HomeState> get copyWith =>
@@ -204,9 +160,7 @@ abstract class _HomeState implements HomeState {
   const factory _HomeState(
       {int page,
       @nullable AnimationController animationController,
-      @nullable Animation<Offset> animationOffset,
-      @nullable AnimationController animationControllerB,
-      @nullable Animation<Offset> animationOffsetB}) = _$_HomeState;
+      @nullable Animation<Offset> animationOffset}) = _$_HomeState;
 
   @override
   int get page;
@@ -216,12 +170,6 @@ abstract class _HomeState implements HomeState {
   @override
   @nullable
   Animation<Offset> get animationOffset;
-  @override
-  @nullable
-  AnimationController get animationControllerB;
-  @override
-  @nullable
-  Animation<Offset> get animationOffsetB;
   @override
   _$HomeStateCopyWith<_HomeState> get copyWith;
 }

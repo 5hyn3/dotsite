@@ -19,13 +19,5 @@ class HomeStateNotifier extends StateNotifier<HomeState> {
   Animation<Offset> getAnimationOffset() {
     return state.animationOffset;
   }
-
-  void setAnimationParameterB(AnimationController controller, Animation<Offset> offset) {
-    state = state.copyWith(animationControllerB: controller, animationOffsetB: offset);
-  }
-
-  Animation<Offset> getAnimationOffsetB() {
-    return state.animationOffsetB;
-  }
 }
 

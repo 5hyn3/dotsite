@@ -40,16 +40,6 @@ class MyApp extends StatelessWidget {
                 controller,
                 MaterialPointArcTween(begin: Offset.zero, end: Offset(0.0, 1)).animate(controller)
             );
-
-            final controllerB = AnimationController(
-                vsync: vsync,
-                duration: Duration(milliseconds: 150));
-
-            stateNotifier.setAnimationParameterB(
-                controllerB,
-                MaterialPointArcTween(begin: Offset.zero, end: Offset(0.0, 1)).animate(controllerB)
-            );
-            controllerB.forward();
             return stateNotifier;
           }),
           StateNotifierProvider<PointerStateNotifier, PointerState>(
@@ -74,19 +64,19 @@ class DotSiteHome extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: context.select((HomeState s) => s.page),
         onTap: (int page) {
-          if (page == 1) {
-            context.read<HomeState>().animationControllerB.reverse();
-            context.read<HomeState>().animationController.forward();
-          } else {
-            context.read<HomeState>().animationControllerB.forward();
+          if (page == 0) {
             context.read<HomeState>().animationController.reverse();
+          } else {
+            context.read<HomeState>().animationController.forward();
           }
           context.read<HomeStateNotifier>().setPage(page);
         },
         items: [
-          new BottomNavigationBarItem(
+          BottomNavigationBarItem(
+              icon: Icon(Icons.add), title: Text("Positioning")),
+          BottomNavigationBarItem(
               icon: Icon(Icons.home), title: Text("Home")),
-          new BottomNavigationBarItem(
+          BottomNavigationBarItem(
               icon: Icon(Icons.settings), title: Text("Setting")),
         ],
       ),
@@ -96,9 +86,6 @@ class DotSiteHome extends StatelessWidget {
           Align(
               alignment: Alignment.bottomCenter,
               child: AnimatedChangePointerPositionButtons()),
-          Align(
-              alignment: Alignment.bottomCenter,
-              child: AnimatedChangePointerPositionButtonsB()),
           PositionablePointer(),
         ],
       ),
@@ -116,16 +103,6 @@ class AnimatedChangePointerPositionButtons extends StatelessWidget {
   }
 }
 
-class AnimatedChangePointerPositionButtonsB extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return context.select((HomeState s) {
-      return SlideTransition(
-          position: s.animationOffsetB, child: ChangePointerPositionButtonsB());
-    });
-  }
-}
-
 class ChangePointerPositionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -134,105 +111,65 @@ class ChangePointerPositionButtons extends StatelessWidget {
           flex: 1,
           child: Container(
               margin: EdgeInsets.all(10.0),
-              child: RaisedButton(
-                child: Icon(Icons.arrow_drop_up),
-                color: Colors.orange,
-                textColor: Colors.white,
-                onPressed: () {
-                  context.read<PointerStateNotifier>().minusOneTop();
-                },
+              child: GestureDetector(
+                onLongPressStart: (details) => context.read<PointerStateNotifier>().startMinusTopLongMove(),
+                onLongPressEnd: (details) => context.read<PointerStateNotifier>().endMinusTopLongMove(),
+                child: RaisedButton(
+                  child: Icon(Icons.arrow_drop_up),
+                  color: Colors.orange,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    context.read<PointerStateNotifier>().minusOneTop();
+                  },
+                ),
               ))),
       Expanded(
           flex: 1,
           child: Container(
               margin: EdgeInsets.all(10.0),
-              child: RaisedButton(
-                child: Icon(Icons.arrow_drop_down),
-                color: Colors.orange,
-                textColor: Colors.white,
-                onPressed: () {
-                  context.read<PointerStateNotifier>().plusOneTop();
-                },
+              child: GestureDetector(
+                onLongPressStart: (details) => context.read<PointerStateNotifier>().startPlusTopLongMove(),
+                onLongPressEnd: (details) => context.read<PointerStateNotifier>().endPlusTopLongMove(),
+                child: RaisedButton(
+                  child: Icon(Icons.arrow_drop_down),
+                  color: Colors.orange,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    context.read<PointerStateNotifier>().plusOneTop();
+                  },
+                ),
               ))),
       Expanded(
           flex: 1,
           child: Container(
               margin: EdgeInsets.all(10.0),
-              child: RaisedButton(
-                child: Icon(Icons.arrow_back),
-                color: Colors.orange,
-                textColor: Colors.white,
-                onPressed: () {
-                  context.read<PointerStateNotifier>().minusOneLeft();
-                },
+              child: GestureDetector(
+                onLongPressStart: (details) => context.read<PointerStateNotifier>().startMinusLeftLongMove(),
+                onLongPressEnd: (details) => context.read<PointerStateNotifier>().endMinusLeftLongMove(),
+                child: RaisedButton(
+                  child: Icon(Icons.arrow_back),
+                  color: Colors.orange,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    context.read<PointerStateNotifier>().minusOneLeft();
+                  },
+                ),
               ))),
       Expanded(
           flex: 1,
           child: Container(
               margin: EdgeInsets.all(10.0),
-              child: RaisedButton(
-                child: Icon(Icons.arrow_forward),
-                color: Colors.orange,
-                textColor: Colors.white,
-                onPressed: () {
-                  context.read<PointerStateNotifier>().plusOneLeft();
-                },
-              ))),
-    ]);
-  }
-}
-
-class ChangePointerPositionButtonsB extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(children: [
-      Expanded(
-          flex: 1,
-          child: Container(
-              margin: EdgeInsets.all(10.0),
-              child: RaisedButton(
-                child: Icon(Icons.arrow_drop_up),
-                color: Colors.blue,
-                textColor: Colors.white,
-                onPressed: () {
-                  context.read<PointerStateNotifier>().minusOneTop();
-                },
-              ))),
-      Expanded(
-          flex: 1,
-          child: Container(
-              margin: EdgeInsets.all(10.0),
-              child: RaisedButton(
-                child: Icon(Icons.arrow_drop_down),
-                color: Colors.blue,
-                textColor: Colors.white,
-                onPressed: () {
-                  context.read<PointerStateNotifier>().plusOneTop();
-                },
-              ))),
-      Expanded(
-          flex: 1,
-          child: Container(
-              margin: EdgeInsets.all(10.0),
-              child: RaisedButton(
-                child: Icon(Icons.arrow_back),
-                color: Colors.blue,
-                textColor: Colors.white,
-                onPressed: () {
-                  context.read<PointerStateNotifier>().minusOneLeft();
-                },
-              ))),
-      Expanded(
-          flex: 1,
-          child: Container(
-              margin: EdgeInsets.all(10.0),
-              child: RaisedButton(
-                child: Icon(Icons.arrow_forward),
-                color: Colors.blue,
-                textColor: Colors.white,
-                onPressed: () {
-                  context.read<PointerStateNotifier>().plusOneLeft();
-                },
+              child: GestureDetector(
+                onLongPressStart: (details) => context.read<PointerStateNotifier>().startPlusLeftLongMove(),
+                onLongPressEnd: (details) => context.read<PointerStateNotifier>().endPlusLeftLongMove(),
+                child: RaisedButton(
+                  child: Icon(Icons.arrow_forward),
+                  color: Colors.orange,
+                  textColor: Colors.white,
+                  onPressed: () {
+                    context.read<PointerStateNotifier>().plusOneLeft();
+                  },
+                ),
               ))),
     ]);
   }

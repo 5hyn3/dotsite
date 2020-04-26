@@ -11,8 +11,6 @@ abstract class HomeState with _$HomeState {
     @Default(0) int page,
     @nullable AnimationController animationController,
     @nullable Animation<Offset> animationOffset,
-    @nullable AnimationController animationControllerB,
-    @nullable Animation<Offset> animationOffsetB
   }) =
   _HomeState;
 }
