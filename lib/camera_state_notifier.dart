@@ -13,7 +13,7 @@ class CameraStateNotifier extends StateNotifier<CameraState> {
         return;
       }
       CameraController controller =
-          new CameraController(rearCamera, ResolutionPreset.veryHigh);
+          new CameraController(rearCamera, ResolutionPreset.max);
       controller.initialize().then((_) {
         if (!mounted) {
           return;

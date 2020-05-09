@@ -18,6 +18,10 @@ environment:
 
 dependencies:
   camera:
+    git:
+      url: git@github.com:5hyn3/plugins.git
+      path: packages/camera
+      ref: modify-camera-plugin-to-enable-high-resolution-preview
   freezed_annotation:
   flutter_state_notifier:
   path_provider:
