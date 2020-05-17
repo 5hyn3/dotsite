@@ -34,12 +34,11 @@ class MyApp extends StatelessWidget {
             stateNotifier.setPage(0);
             final vsync = VsyncProvider.of(context);
             final controller = AnimationController(
-                vsync: vsync,
-                duration: Duration(milliseconds: 150));
+                vsync: vsync, duration: Duration(milliseconds: 150));
             stateNotifier.setAnimationParameter(
                 controller,
-                MaterialPointArcTween(begin: Offset.zero, end: Offset(0.0, 1)).animate(controller)
-            );
+                MaterialPointArcTween(begin: Offset.zero, end: Offset(0.0, 1))
+                    .animate(controller));
             return stateNotifier;
           }),
           StateNotifierProvider<PointerStateNotifier, PointerState>(
@@ -48,7 +47,7 @@ class MyApp extends StatelessWidget {
               create: (BuildContext context) => CameraStateNotifier()),
         ],
         child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Dot Site',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
@@ -64,18 +63,23 @@ class DotSiteHome extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: context.select((HomeState s) => s.page),
         onTap: (int page) {
-          if (page == 0) {
-            context.read<HomeState>().animationController.reverse();
-          } else {
-            context.read<HomeState>().animationController.forward();
+          switch (page) {
+            case 0:
+              context.read<HomeState>().animationController.reverse();
+              break;
+            case 1:
+              context.read<HomeState>().animationController.forward();
+              break;
+            case 2:
+              _showSettingModalBottomSheet(context);
+              break;
           }
           context.read<HomeStateNotifier>().setPage(page);
         },
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.add), title: Text("Positioning")),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home), title: Text("Home")),
+          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("Home")),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings), title: Text("Setting")),
         ],
@@ -112,8 +116,11 @@ class ChangePointerPositionButtons extends StatelessWidget {
           child: Container(
               margin: EdgeInsets.all(10.0),
               child: GestureDetector(
-                onLongPressStart: (details) => context.read<PointerStateNotifier>().startMinusTopLongMove(),
-                onLongPressEnd: (details) => context.read<PointerStateNotifier>().endMinusTopLongMove(),
+                onLongPressStart: (details) => context
+                    .read<PointerStateNotifier>()
+                    .startMinusTopLongMove(),
+                onLongPressEnd: (details) =>
+                    context.read<PointerStateNotifier>().endMinusTopLongMove(),
                 child: RaisedButton(
                   child: Icon(Icons.arrow_drop_up),
                   color: Colors.orange,
@@ -128,8 +135,10 @@ class ChangePointerPositionButtons extends StatelessWidget {
           child: Container(
               margin: EdgeInsets.all(10.0),
               child: GestureDetector(
-                onLongPressStart: (details) => context.read<PointerStateNotifier>().startPlusTopLongMove(),
-                onLongPressEnd: (details) => context.read<PointerStateNotifier>().endPlusTopLongMove(),
+                onLongPressStart: (details) =>
+                    context.read<PointerStateNotifier>().startPlusTopLongMove(),
+                onLongPressEnd: (details) =>
+                    context.read<PointerStateNotifier>().endPlusTopLongMove(),
                 child: RaisedButton(
                   child: Icon(Icons.arrow_drop_down),
                   color: Colors.orange,
@@ -144,8 +153,11 @@ class ChangePointerPositionButtons extends StatelessWidget {
           child: Container(
               margin: EdgeInsets.all(10.0),
               child: GestureDetector(
-                onLongPressStart: (details) => context.read<PointerStateNotifier>().startMinusLeftLongMove(),
-                onLongPressEnd: (details) => context.read<PointerStateNotifier>().endMinusLeftLongMove(),
+                onLongPressStart: (details) => context
+                    .read<PointerStateNotifier>()
+                    .startMinusLeftLongMove(),
+                onLongPressEnd: (details) =>
+                    context.read<PointerStateNotifier>().endMinusLeftLongMove(),
                 child: RaisedButton(
                   child: Icon(Icons.arrow_back),
                   color: Colors.orange,
@@ -160,8 +172,11 @@ class ChangePointerPositionButtons extends StatelessWidget {
           child: Container(
               margin: EdgeInsets.all(10.0),
               child: GestureDetector(
-                onLongPressStart: (details) => context.read<PointerStateNotifier>().startPlusLeftLongMove(),
-                onLongPressEnd: (details) => context.read<PointerStateNotifier>().endPlusLeftLongMove(),
+                onLongPressStart: (details) => context
+                    .read<PointerStateNotifier>()
+                    .startPlusLeftLongMove(),
+                onLongPressEnd: (details) =>
+                    context.read<PointerStateNotifier>().endPlusLeftLongMove(),
                 child: RaisedButton(
                   child: Icon(Icons.arrow_forward),
                   color: Colors.orange,
@@ -244,4 +259,18 @@ class Preview extends StatelessWidget {
       }
     });
   }
+}
+
+void _showSettingModalBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (BuildContext bc) {
+        return Container(
+          padding:EdgeInsets.all(16.0),
+          child: Text("hai"),
+        );
+      });
 }
