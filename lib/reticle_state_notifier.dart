@@ -1,15 +1,16 @@
 import 'dart:async';
 
-import 'pointer_state.dart';
+import 'package:dotsite/reticle_color.dart';
+
+import 'reticle_state.dart';
 import 'package:state_notifier/state_notifier.dart';
 
-class PointerStateNotifier extends StateNotifier<PointerState> {
-  PointerStateNotifier()
-      : super(const PointerState()) {
+class ReticleStateNotifier extends StateNotifier<ReticleState> {
+  ReticleStateNotifier()
+      : super(const ReticleState()) {
     state = state.copyWith(
       top: null,
-      left: null,
-      size: null
+      left: null
     );
   }
 
@@ -81,6 +82,14 @@ class PointerStateNotifier extends StateNotifier<PointerState> {
   }
   void _plusLeftLongMove() {
     state = state.copyWith(left: state.left + _longMoveAmount);
+  }
+
+  void setColor(ReticleColor color) {
+    state = state.copyWith(color: color);
+  }
+
+  void setSize(double size) {
+    state = state.copyWith(size: size);
   }
 }
 

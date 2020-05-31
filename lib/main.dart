@@ -1,6 +1,8 @@
+import 'package:dotsite/camera_error.dart';
 import 'package:dotsite/home_state_notifier.dart';
-import 'package:dotsite/pointer_state.dart';
-import 'package:dotsite/pointer_state_notifier.dart';
+import 'package:dotsite/reticle_color.dart';
+import 'package:dotsite/reticle_state.dart';
+import 'package:dotsite/reticle_state_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
@@ -12,9 +14,11 @@ import 'camera_state_notifier.dart';
 import 'package:provider/provider.dart';
 
 import 'home_state.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIOverlays([]);
   SystemChrome.setPreferredOrientations(
           [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
       .then((_) {
@@ -41,8 +45,8 @@ class MyApp extends StatelessWidget {
                     .animate(controller));
             return stateNotifier;
           }),
-          StateNotifierProvider<PointerStateNotifier, PointerState>(
-              create: (BuildContext context) => PointerStateNotifier()),
+          StateNotifierProvider<ReticleStateNotifier, ReticleState>(
+              create: (BuildContext context) => ReticleStateNotifier()),
           StateNotifierProvider<CameraStateNotifier, CameraState>(
               create: (BuildContext context) => CameraStateNotifier()),
         ],
@@ -59,21 +63,25 @@ class MyApp extends StatelessWidget {
 class DotSiteHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    context.select((HomeState s) {
+      switch (s.page) {
+        case 0:
+          s.animationController.reverse();
+          break;
+        case 1:
+          s.animationController.forward();
+          break;
+        case 2:
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _showSettingModalBottomSheet(context);
+          });
+          break;
+      }
+    });
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: context.select((HomeState s) => s.page),
         onTap: (int page) {
-          switch (page) {
-            case 0:
-              context.read<HomeState>().animationController.reverse();
-              break;
-            case 1:
-              context.read<HomeState>().animationController.forward();
-              break;
-            case 2:
-              _showSettingModalBottomSheet(context);
-              break;
-          }
           context.read<HomeStateNotifier>().setPage(page);
         },
         items: [
@@ -89,25 +97,25 @@ class DotSiteHome extends StatelessWidget {
           const Preview(),
           Align(
               alignment: Alignment.bottomCenter,
-              child: AnimatedChangePointerPositionButtons()),
-          PositionablePointer(),
+              child: AnimatedChangeReticlePositionButtons()),
+          PositionableReticle(),
         ],
       ),
     );
   }
 }
 
-class AnimatedChangePointerPositionButtons extends StatelessWidget {
+class AnimatedChangeReticlePositionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return context.select((HomeState s) {
       return SlideTransition(
-          position: s.animationOffset, child: ChangePointerPositionButtons());
+          position: s.animationOffset, child: ChangeReticlePositionButtons());
     });
   }
 }
 
-class ChangePointerPositionButtons extends StatelessWidget {
+class ChangeReticlePositionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
@@ -117,16 +125,16 @@ class ChangePointerPositionButtons extends StatelessWidget {
               margin: EdgeInsets.all(10.0),
               child: GestureDetector(
                 onLongPressStart: (details) => context
-                    .read<PointerStateNotifier>()
+                    .read<ReticleStateNotifier>()
                     .startMinusTopLongMove(),
                 onLongPressEnd: (details) =>
-                    context.read<PointerStateNotifier>().endMinusTopLongMove(),
+                    context.read<ReticleStateNotifier>().endMinusTopLongMove(),
                 child: RaisedButton(
                   child: Icon(Icons.arrow_drop_up),
                   color: Colors.orange,
                   textColor: Colors.white,
                   onPressed: () {
-                    context.read<PointerStateNotifier>().minusOneTop();
+                    context.read<ReticleStateNotifier>().minusOneTop();
                   },
                 ),
               ))),
@@ -136,15 +144,15 @@ class ChangePointerPositionButtons extends StatelessWidget {
               margin: EdgeInsets.all(10.0),
               child: GestureDetector(
                 onLongPressStart: (details) =>
-                    context.read<PointerStateNotifier>().startPlusTopLongMove(),
+                    context.read<ReticleStateNotifier>().startPlusTopLongMove(),
                 onLongPressEnd: (details) =>
-                    context.read<PointerStateNotifier>().endPlusTopLongMove(),
+                    context.read<ReticleStateNotifier>().endPlusTopLongMove(),
                 child: RaisedButton(
                   child: Icon(Icons.arrow_drop_down),
                   color: Colors.orange,
                   textColor: Colors.white,
                   onPressed: () {
-                    context.read<PointerStateNotifier>().plusOneTop();
+                    context.read<ReticleStateNotifier>().plusOneTop();
                   },
                 ),
               ))),
@@ -154,16 +162,16 @@ class ChangePointerPositionButtons extends StatelessWidget {
               margin: EdgeInsets.all(10.0),
               child: GestureDetector(
                 onLongPressStart: (details) => context
-                    .read<PointerStateNotifier>()
+                    .read<ReticleStateNotifier>()
                     .startMinusLeftLongMove(),
                 onLongPressEnd: (details) =>
-                    context.read<PointerStateNotifier>().endMinusLeftLongMove(),
+                    context.read<ReticleStateNotifier>().endMinusLeftLongMove(),
                 child: RaisedButton(
                   child: Icon(Icons.arrow_back),
                   color: Colors.orange,
                   textColor: Colors.white,
                   onPressed: () {
-                    context.read<PointerStateNotifier>().minusOneLeft();
+                    context.read<ReticleStateNotifier>().minusOneLeft();
                   },
                 ),
               ))),
@@ -173,16 +181,16 @@ class ChangePointerPositionButtons extends StatelessWidget {
               margin: EdgeInsets.all(10.0),
               child: GestureDetector(
                 onLongPressStart: (details) => context
-                    .read<PointerStateNotifier>()
+                    .read<ReticleStateNotifier>()
                     .startPlusLeftLongMove(),
                 onLongPressEnd: (details) =>
-                    context.read<PointerStateNotifier>().endPlusLeftLongMove(),
+                    context.read<ReticleStateNotifier>().endPlusLeftLongMove(),
                 child: RaisedButton(
                   child: Icon(Icons.arrow_forward),
                   color: Colors.orange,
                   textColor: Colors.white,
                   onPressed: () {
-                    context.read<PointerStateNotifier>().plusOneLeft();
+                    context.read<ReticleStateNotifier>().plusOneLeft();
                   },
                 ),
               ))),
@@ -190,13 +198,12 @@ class ChangePointerPositionButtons extends StatelessWidget {
   }
 }
 
-class PositionablePointer extends StatelessWidget {
+class PositionableReticle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final state = context.read<PointerState>();
+    final state = context.read<ReticleState>();
 
-    double iconSize = 40;
-    final positionOffset = iconSize;
+    final positionOffset = state.size;
     final screenSize = MediaQuery.of(context).size;
 
     final top = state.top ??
@@ -205,7 +212,7 @@ class PositionablePointer extends StatelessWidget {
           // final initialHeight = screenSize.height / 2 - positionOffset - 20;
           final initialHeight = 176.3;
           WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
-            context.read<PointerStateNotifier>().setTop(initialHeight);
+            context.read<ReticleStateNotifier>().setTop(initialHeight);
           });
           return initialHeight;
         }();
@@ -216,21 +223,21 @@ class PositionablePointer extends StatelessWidget {
           // final initialWidth = screenSize.width / 2 - positionOffset + 20;
           final initialWidth = 395.7;
           WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
-            context.read<PointerStateNotifier>().setLeft(initialWidth);
+            context.read<ReticleStateNotifier>().setLeft(initialWidth);
           });
           return initialWidth;
         }();
 
-    return context.select((PointerState s) {
+    return context.select((ReticleState s) {
       return Positioned(
           top: s.top ?? top,
           left: s.left ?? left,
           width: positionOffset,
           height: positionOffset,
-          child: Icon(
-            Icons.add,
-            size: iconSize,
-          ));
+          child: Icon(Icons.add,
+              size: s.size,
+              color: s.color
+                  .when(black: () => Colors.black, white: () => Colors.white)));
     });
   }
 }
@@ -240,6 +247,17 @@ class Preview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return context.select((CameraState s) {
+      if (s.error == CameraError.selectedCameraCanNotUseError()) {
+        Fluttertoast.showToast(
+            msg: "選択したカメラは使用できません",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          context.read<CameraStateNotifier>().consumeError();
+        });
+      }
       CameraController controller = s.initializedController;
       if (controller == null || !controller.value.isInitialized) {
         return Container();
@@ -262,15 +280,157 @@ class Preview extends StatelessWidget {
 }
 
 void _showSettingModalBottomSheet(BuildContext context) {
+  if (context.read<HomeState>().settingModalBottomSheetShowed) return;
+  context.read<HomeStateNotifier>().showedSettingBottomSheet();
   showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      builder: (BuildContext bc) {
+      builder: (BuildContext context) {
         return Container(
-          padding:EdgeInsets.all(16.0),
-          child: Text("hai"),
+          padding: EdgeInsets.all(16.0),
+          child: Settings(),
         );
-      });
+      }).whenComplete(() {
+    context.read<HomeStateNotifier>().hideSettingBottomSheet();
+    context.read<HomeStateNotifier>().setPage(1);
+  });
+}
+
+class Settings extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var leftWidgets = [
+      Text("設定"),
+      Text("レティクル"),
+      Text("色"),
+      DropdownButton(
+        value: context.select((ReticleState s) => s.color),
+        elevation: 16,
+        style: TextStyle(color: Colors.deepPurple),
+        underline: Container(
+          height: 2,
+          color: Colors.deepPurpleAccent,
+        ),
+        onChanged: (ReticleColor newValue) {
+          context.read<ReticleStateNotifier>().setColor(newValue);
+        },
+        items: [ReticleColor.black(), ReticleColor.white()]
+            .map<DropdownMenuItem<ReticleColor>>((ReticleColor value) {
+          return DropdownMenuItem(
+            value: value,
+            child: Text(value.when(black: () => "黒", white: () => "白")),
+          );
+        }).toList(),
+      ),
+      Text("サイズ"),
+      Slider(
+        value: context.select((ReticleState s) => s.size),
+        min: 20,
+        max: 80,
+        onChanged: (double value) {
+          context.read<ReticleStateNotifier>().setSize(value);
+        },
+      ),
+      Text("カメラ選択"),
+      DropdownButton(
+        value: context.select((CameraState s) => s.cameraNumber),
+        elevation: 16,
+        style: TextStyle(color: Colors.deepPurple),
+        underline: Container(
+          height: 2,
+          color: Colors.deepPurpleAccent,
+        ),
+        onChanged: (int newValue) {
+          context.read<CameraStateNotifier>().changeCamera(newValue);
+        },
+        items: context
+            .read<CameraStateNotifier>()
+            .availableRearCameraNumbers
+            .map<DropdownMenuItem<int>>((int value) {
+          return DropdownMenuItem(
+            value: value,
+            child: Text(value.toString()),
+          );
+        }).toList(),
+      ),
+      InkWell(
+        onTap: () {
+          showSaveSettingDialog(context);
+        },
+        child: Text("設定の保存"),
+      ),
+      InkWell(
+        onTap: () {
+          showAboutDialog(context: context);
+        },
+        child: Text("このアプリについて"),
+      ),
+    ];
+    var rightWidgets = [
+      Text("設定の読み込み"),
+      Text("item1"),
+      Text("item2"),
+      Text("item3"),
+      Text("item4"),
+    ];
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: ListView(children: leftWidgets),
+        ),
+        VerticalDivider(),
+        Expanded(
+          flex: 1,
+          child: ListView(children: rightWidgets),
+        ),
+      ],
+    );
+  }
+
+  Future showSaveSettingDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                AlertDialog(
+                  title: Text("設定の保存"),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            TextField(
+                              decoration: InputDecoration(
+                                labelText: '設定の名前を入力してください',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                        child: const Text('キャンセル'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                    FlatButton(
+                        child: const Text('保存する'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        })
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
+  }
 }

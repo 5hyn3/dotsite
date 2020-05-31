@@ -8,6 +8,7 @@ import 'package:state_notifier/state_notifier.dart';
 class HomeStateNotifier extends StateNotifier<HomeState> {
   HomeStateNotifier()
       : super(const HomeState());
+
   void setPage(int page) {
     state = state.copyWith(page: page);
   }
@@ -16,8 +17,13 @@ class HomeStateNotifier extends StateNotifier<HomeState> {
     state = state.copyWith(animationController: controller, animationOffset: offset);
   }
 
-  Animation<Offset> getAnimationOffset() {
-    return state.animationOffset;
+  void showedSettingBottomSheet() {
+    state = state.copyWith(settingModalBottomSheetShowed: true);
+  }
+
+
+  void hideSettingBottomSheet() {
+    state = state.copyWith(settingModalBottomSheetShowed: false);
   }
 }
 

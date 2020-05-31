@@ -12,9 +12,14 @@ T _$identity<T>(T value) => value;
 class _$CameraStateTearOff {
   const _$CameraStateTearOff();
 
-  _CameraState call({CameraController initializedController}) {
+  _CameraState call(
+      {@nullable CameraController initializedController,
+      int cameraNumber = 0,
+      @nullable CameraError error}) {
     return _CameraState(
       initializedController: initializedController,
+      cameraNumber: cameraNumber,
+      error: error,
     );
   }
 }
@@ -23,7 +28,11 @@ class _$CameraStateTearOff {
 const $CameraState = _$CameraStateTearOff();
 
 mixin _$CameraState {
+  @nullable
   CameraController get initializedController;
+  int get cameraNumber;
+  @nullable
+  CameraError get error;
 
   $CameraStateCopyWith<CameraState> get copyWith;
 }
@@ -32,7 +41,12 @@ abstract class $CameraStateCopyWith<$Res> {
   factory $CameraStateCopyWith(
           CameraState value, $Res Function(CameraState) then) =
       _$CameraStateCopyWithImpl<$Res>;
-  $Res call({CameraController initializedController});
+  $Res call(
+      {@nullable CameraController initializedController,
+      int cameraNumber,
+      @nullable CameraError error});
+
+  $CameraErrorCopyWith<$Res> get error;
 }
 
 class _$CameraStateCopyWithImpl<$Res> implements $CameraStateCopyWith<$Res> {
@@ -45,12 +59,27 @@ class _$CameraStateCopyWithImpl<$Res> implements $CameraStateCopyWith<$Res> {
   @override
   $Res call({
     Object initializedController = freezed,
+    Object cameraNumber = freezed,
+    Object error = freezed,
   }) {
     return _then(_value.copyWith(
       initializedController: initializedController == freezed
           ? _value.initializedController
           : initializedController as CameraController,
+      cameraNumber:
+          cameraNumber == freezed ? _value.cameraNumber : cameraNumber as int,
+      error: error == freezed ? _value.error : error as CameraError,
     ));
+  }
+
+  @override
+  $CameraErrorCopyWith<$Res> get error {
+    if (_value.error == null) {
+      return null;
+    }
+    return $CameraErrorCopyWith<$Res>(_value.error, (value) {
+      return _then(_value.copyWith(error: value));
+    });
   }
 }
 
@@ -60,7 +89,13 @@ abstract class _$CameraStateCopyWith<$Res>
           _CameraState value, $Res Function(_CameraState) then) =
       __$CameraStateCopyWithImpl<$Res>;
   @override
-  $Res call({CameraController initializedController});
+  $Res call(
+      {@nullable CameraController initializedController,
+      int cameraNumber,
+      @nullable CameraError error});
+
+  @override
+  $CameraErrorCopyWith<$Res> get error;
 }
 
 class __$CameraStateCopyWithImpl<$Res> extends _$CameraStateCopyWithImpl<$Res>
@@ -75,24 +110,40 @@ class __$CameraStateCopyWithImpl<$Res> extends _$CameraStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object initializedController = freezed,
+    Object cameraNumber = freezed,
+    Object error = freezed,
   }) {
     return _then(_CameraState(
       initializedController: initializedController == freezed
           ? _value.initializedController
           : initializedController as CameraController,
+      cameraNumber:
+          cameraNumber == freezed ? _value.cameraNumber : cameraNumber as int,
+      error: error == freezed ? _value.error : error as CameraError,
     ));
   }
 }
 
 class _$_CameraState implements _CameraState {
-  const _$_CameraState({this.initializedController});
+  const _$_CameraState(
+      {@nullable this.initializedController,
+      this.cameraNumber = 0,
+      @nullable this.error})
+      : assert(cameraNumber != null);
 
   @override
+  @nullable
   final CameraController initializedController;
+  @JsonKey(defaultValue: 0)
+  @override
+  final int cameraNumber;
+  @override
+  @nullable
+  final CameraError error;
 
   @override
   String toString() {
-    return 'CameraState(initializedController: $initializedController)';
+    return 'CameraState(initializedController: $initializedController, cameraNumber: $cameraNumber, error: $error)';
   }
 
   @override
@@ -101,13 +152,20 @@ class _$_CameraState implements _CameraState {
         (other is _CameraState &&
             (identical(other.initializedController, initializedController) ||
                 const DeepCollectionEquality().equals(
-                    other.initializedController, initializedController)));
+                    other.initializedController, initializedController)) &&
+            (identical(other.cameraNumber, cameraNumber) ||
+                const DeepCollectionEquality()
+                    .equals(other.cameraNumber, cameraNumber)) &&
+            (identical(other.error, error) ||
+                const DeepCollectionEquality().equals(other.error, error)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(initializedController);
+      const DeepCollectionEquality().hash(initializedController) ^
+      const DeepCollectionEquality().hash(cameraNumber) ^
+      const DeepCollectionEquality().hash(error);
 
   @override
   _$CameraStateCopyWith<_CameraState> get copyWith =>
@@ -115,11 +173,19 @@ class _$_CameraState implements _CameraState {
 }
 
 abstract class _CameraState implements CameraState {
-  const factory _CameraState({CameraController initializedController}) =
-      _$_CameraState;
+  const factory _CameraState(
+      {@nullable CameraController initializedController,
+      int cameraNumber,
+      @nullable CameraError error}) = _$_CameraState;
 
   @override
+  @nullable
   CameraController get initializedController;
+  @override
+  int get cameraNumber;
+  @override
+  @nullable
+  CameraError get error;
   @override
   _$CameraStateCopyWith<_CameraState> get copyWith;
 }
