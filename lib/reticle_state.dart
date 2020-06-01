@@ -1,4 +1,4 @@
-import 'package:dotsite/reticle_color.dart';
+import 'entity/reticle_color.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'reticle_state.freezed.dart';

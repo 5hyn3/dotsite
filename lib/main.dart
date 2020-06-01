@@ -1,6 +1,9 @@
-import 'package:dotsite/camera_error.dart';
+import 'package:dotsite/repository/setting_repository.dart';
+
+import 'entity/camera_error.dart';
 import 'package:dotsite/home_state_notifier.dart';
-import 'package:dotsite/reticle_color.dart';
+import 'entity/reticle_color.dart';
+import 'entity/settings.dart' as SettingEntity;
 import 'package:dotsite/reticle_state.dart';
 import 'package:dotsite/reticle_state_notifier.dart';
 import 'package:flutter/material.dart';
@@ -419,11 +422,20 @@ class Settings extends StatelessWidget {
                     FlatButton(
                         child: const Text('キャンセル'),
                         onPressed: () {
+                          SettingRepository().getSetting(8);
                           Navigator.pop(context);
                         }),
                     FlatButton(
                         child: const Text('保存する'),
                         onPressed: () {
+                          SettingRepository().saveSetting(SettingEntity.Settings(
+                            name: "hoge",
+                            cameraNumber: 0,
+                            reticleColor: ReticleColor.black(),
+                            reticleTop: 100,
+                            reticleLeft: 100,
+                            reticleSize: 40,
+                          ));
                           Navigator.pop(context);
                         })
                   ],

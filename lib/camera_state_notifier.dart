@@ -1,5 +1,5 @@
 import 'package:camera/camera.dart';
-import 'package:dotsite/camera_error.dart';
+import 'entity/camera_error.dart';
 
 import 'camera_state.dart';
 import 'package:state_notifier/state_notifier.dart';

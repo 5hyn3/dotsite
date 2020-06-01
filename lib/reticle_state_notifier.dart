@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dotsite/reticle_color.dart';
+import 'entity/reticle_color.dart';
 
 import 'reticle_state.dart';
 import 'package:state_notifier/state_notifier.dart';
