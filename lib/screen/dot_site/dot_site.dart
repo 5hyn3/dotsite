@@ -1,7 +1,6 @@
 import 'package:dotsite/entity/camera_error.dart';
 import 'package:dotsite/entity/reticle_color.dart';
 import 'package:dotsite/repository/setting_repository.dart';
-import 'package:dotsite/entity/settings.dart' as SettingEntity;
 import 'dot_site_state.dart';
 import 'dot_site_state_notifier.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +17,7 @@ class DotSite extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          Provider<SettingRepository>(create: (_) => SettingRepository()),
           VsyncProvider(isSingleTicker: false),
           StateNotifierProvider<DotSiteStateNotifier, DotSiteState>(
               create: (BuildContext context) {
@@ -285,7 +285,6 @@ class Settings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var leftWidgets = [
-      Text("設定"),
       Text("レティクル"),
       Text("色"),
       DropdownButton(
@@ -351,23 +350,37 @@ class Settings extends StatelessWidget {
         child: Text("このアプリについて"),
       ),
     ];
-    var rightWidgets = [
-      Text("設定の読み込み"),
-      Text("item1"),
-      Text("item2"),
-      Text("item3"),
-      Text("item4"),
-    ];
     return Row(
       children: <Widget>[
         Expanded(
           flex: 1,
-          child: ListView(children: leftWidgets),
+          child: Column(
+            children: <Widget>[
+              Text("設定"),
+              Flexible(child: ListView(children: leftWidgets)),
+            ],
+          ),
         ),
         VerticalDivider(),
         Expanded(
           flex: 1,
-          child: ListView(children: rightWidgets),
+          child: Column(
+            children: <Widget>[
+              Text("設定の読み込み"),
+              Flexible(
+                  child: ListView(
+                      children: context.select((DotSiteState s) => s.settings
+                          .map((e) => InkWell(
+                              onTap: () {
+                                context
+                                    .read<DotSiteStateNotifier>()
+                                    .applySettingById(e.id);
+                                Navigator.pop(context);
+                              },
+                              child: Text(e.name)))
+                          .toList()))),
+            ],
+          ),
         ),
       ],
     );
@@ -389,6 +402,9 @@ class Settings extends StatelessWidget {
                         Column(
                           children: <Widget>[
                             TextField(
+                              controller: context
+                                  .read<DotSiteStateNotifier>()
+                                  .settingNameTextEditingController,
                               decoration: InputDecoration(
                                 labelText: '設定の名前を入力してください',
                               ),
@@ -402,21 +418,12 @@ class Settings extends StatelessWidget {
                     FlatButton(
                         child: const Text('キャンセル'),
                         onPressed: () {
-                          SettingRepository().getSetting(8);
                           Navigator.pop(context);
                         }),
                     FlatButton(
                         child: const Text('保存する'),
                         onPressed: () {
-                          SettingRepository()
-                              .saveSetting(SettingEntity.Settings(
-                            name: "hoge",
-                            cameraNumber: 0,
-                            reticleColor: ReticleColor.black(),
-                            reticleTop: 100,
-                            reticleLeft: 100,
-                            reticleSize: 40,
-                          ));
+                          context.read<DotSiteStateNotifier>().saveNowSetting();
                           Navigator.pop(context);
                         })
                   ],

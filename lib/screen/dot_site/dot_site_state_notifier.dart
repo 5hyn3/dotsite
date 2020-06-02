@@ -4,19 +4,34 @@ import 'dart:ui';
 import 'package:camera/camera.dart';
 import 'package:dotsite/entity/camera_error.dart';
 import 'package:dotsite/entity/reticle_color.dart';
+import 'package:dotsite/entity/setting.dart';
+import 'package:dotsite/repository/setting_repository.dart';
 import 'package:flutter/animation.dart';
+import 'package:flutter/material.dart';
 
 import 'dot_site_state.dart';
 import 'package:state_notifier/state_notifier.dart';
 
-class DotSiteStateNotifier extends StateNotifier<DotSiteState> {
+class DotSiteStateNotifier extends StateNotifier<DotSiteState> with LocatorMixin {
+
+  SettingRepository get _settingRepository => read();
+
+  List<int> availableRearCameraNumbers = [];
+
+  TextEditingController settingNameTextEditingController = TextEditingController();
+
   DotSiteStateNotifier()
       : super(const DotSiteState(
           initializedController: null,
           reticleTop: null,
           reticleLeft: null,
         )) {
+  }
+
+  @override
+  void initState() {
     _initializeCameraControllerWithCameraNumber(state.cameraNumber, false);
+    _getAllSettings();
   }
 
   @override
@@ -25,44 +40,8 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState> {
     super.dispose();
   }
 
-  List<int> availableRearCameraNumbers = [];
-
   void changeCamera(int cameraNumber) {
     _initializeCameraControllerWithCameraNumber(cameraNumber, false);
-  }
-
-  void _initializeCameraControllerWithCameraNumber(
-      int cameraNumber, bool isRetry) {
-    availableCameras().then((cameras) {
-      if (availableRearCameraNumbers.isEmpty) {
-        for (int i = 0; i < cameras.length; i++) {
-          final camera = cameras[i];
-          if (camera.lensDirection == CameraLensDirection.back) {
-            availableRearCameraNumbers.add(i);
-          }
-        }
-      }
-      CameraDescription camera = cameras[cameraNumber];
-      if (camera == null) {
-        return;
-      }
-      CameraController controller =
-          new CameraController(camera, ResolutionPreset.ultraHigh);
-      controller.initialize().then((_) {
-        if (!mounted) {
-          return;
-        }
-        state = state.copyWith(
-            initializedController: controller, cameraNumber: cameraNumber);
-      }).catchError((err) {
-        if (err is CameraException) {
-          if (isRetry) return;
-          state = state.copyWith(
-              cameraError: CameraError.selectedCameraCanNotUseError());
-          _initializeCameraControllerWithCameraNumber(state.cameraNumber, true);
-        }
-      });
-    });
   }
 
   void consumeError() {
@@ -184,5 +163,70 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState> {
 
   void setSize(double size) {
     state = state.copyWith(reticleSize: size);
+  }
+
+  void applySettingById(int id) {
+    _settingRepository.getSetting(id).then((value) {
+      state = state.copyWith(
+        cameraNumber: value.cameraNumber,
+        reticleSize: value.reticleSize,
+        reticleColor: value.reticleColor,
+        reticleTop: value.reticleTop,
+        reticleLeft: value.reticleLeft,
+      );
+    });
+  }
+
+  void saveNowSetting() {
+    final name = settingNameTextEditingController.text;
+    if (name.isEmpty) return;
+    _settingRepository.saveSetting(Setting(
+      name: name,
+      cameraNumber: state.cameraNumber,
+      reticleSize: state.reticleSize,
+      reticleColor: state.reticleColor,
+      reticleTop: state.reticleTop,
+      reticleLeft: state.reticleLeft,
+    )).then((value) => _getAllSettings());
+  }
+
+  void _getAllSettings() {
+    _settingRepository.getAllSettings().then(
+            (value) => state = state.copyWith(settings: value)
+    );
+  }
+
+  void _initializeCameraControllerWithCameraNumber(
+      int cameraNumber, bool isRetry) {
+    availableCameras().then((cameras) {
+      if (availableRearCameraNumbers.isEmpty) {
+        for (int i = 0; i < cameras.length; i++) {
+          final camera = cameras[i];
+          if (camera.lensDirection == CameraLensDirection.back) {
+            availableRearCameraNumbers.add(i);
+          }
+        }
+      }
+      CameraDescription camera = cameras[cameraNumber];
+      if (camera == null) {
+        return;
+      }
+      CameraController controller =
+      new CameraController(camera, ResolutionPreset.ultraHigh);
+      controller.initialize().then((_) {
+        if (!mounted) {
+          return;
+        }
+        state = state.copyWith(
+            initializedController: controller, cameraNumber: cameraNumber);
+      }).catchError((err) {
+        if (err is CameraException) {
+          if (isRetry) return;
+          state = state.copyWith(
+              cameraError: CameraError.selectedCameraCanNotUseError());
+          _initializeCameraControllerWithCameraNumber(state.cameraNumber, true);
+        }
+      });
+    });
   }
 }

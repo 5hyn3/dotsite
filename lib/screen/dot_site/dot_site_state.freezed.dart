@@ -23,7 +23,8 @@ class _$DotSiteStateTearOff {
       @nullable double reticleTop,
       @nullable double reticleLeft,
       double reticleSize = 40,
-      ReticleColor reticleColor = const ReticleColor.black()}) {
+      ReticleColor reticleColor = const ReticleColor.black(),
+      List<Setting> settings = const []}) {
     return _DotSiteState(
       initializedController: initializedController,
       cameraNumber: cameraNumber,
@@ -36,6 +37,7 @@ class _$DotSiteStateTearOff {
       reticleLeft: reticleLeft,
       reticleSize: reticleSize,
       reticleColor: reticleColor,
+      settings: settings,
     );
   }
 }
@@ -61,6 +63,7 @@ mixin _$DotSiteState {
   double get reticleLeft;
   double get reticleSize;
   ReticleColor get reticleColor;
+  List<Setting> get settings;
 
   $DotSiteStateCopyWith<DotSiteState> get copyWith;
 }
@@ -80,7 +83,8 @@ abstract class $DotSiteStateCopyWith<$Res> {
       @nullable double reticleTop,
       @nullable double reticleLeft,
       double reticleSize,
-      ReticleColor reticleColor});
+      ReticleColor reticleColor,
+      List<Setting> settings});
 
   $CameraErrorCopyWith<$Res> get cameraError;
   $ReticleColorCopyWith<$Res> get reticleColor;
@@ -106,6 +110,7 @@ class _$DotSiteStateCopyWithImpl<$Res> implements $DotSiteStateCopyWith<$Res> {
     Object reticleLeft = freezed,
     Object reticleSize = freezed,
     Object reticleColor = freezed,
+    Object settings = freezed,
   }) {
     return _then(_value.copyWith(
       initializedController: initializedController == freezed
@@ -135,6 +140,8 @@ class _$DotSiteStateCopyWithImpl<$Res> implements $DotSiteStateCopyWith<$Res> {
       reticleColor: reticleColor == freezed
           ? _value.reticleColor
           : reticleColor as ReticleColor,
+      settings:
+          settings == freezed ? _value.settings : settings as List<Setting>,
     ));
   }
 
@@ -176,7 +183,8 @@ abstract class _$DotSiteStateCopyWith<$Res>
       @nullable double reticleTop,
       @nullable double reticleLeft,
       double reticleSize,
-      ReticleColor reticleColor});
+      ReticleColor reticleColor,
+      List<Setting> settings});
 
   @override
   $CameraErrorCopyWith<$Res> get cameraError;
@@ -206,6 +214,7 @@ class __$DotSiteStateCopyWithImpl<$Res> extends _$DotSiteStateCopyWithImpl<$Res>
     Object reticleLeft = freezed,
     Object reticleSize = freezed,
     Object reticleColor = freezed,
+    Object settings = freezed,
   }) {
     return _then(_DotSiteState(
       initializedController: initializedController == freezed
@@ -235,6 +244,8 @@ class __$DotSiteStateCopyWithImpl<$Res> extends _$DotSiteStateCopyWithImpl<$Res>
       reticleColor: reticleColor == freezed
           ? _value.reticleColor
           : reticleColor as ReticleColor,
+      settings:
+          settings == freezed ? _value.settings : settings as List<Setting>,
     ));
   }
 }
@@ -251,12 +262,14 @@ class _$_DotSiteState implements _DotSiteState {
       @nullable this.reticleTop,
       @nullable this.reticleLeft,
       this.reticleSize = 40,
-      this.reticleColor = const ReticleColor.black()})
+      this.reticleColor = const ReticleColor.black(),
+      this.settings = const []})
       : assert(cameraNumber != null),
         assert(page != null),
         assert(settingModalBottomSheetShowed != null),
         assert(reticleSize != null),
-        assert(reticleColor != null);
+        assert(reticleColor != null),
+        assert(settings != null);
 
   @override
   @nullable
@@ -291,10 +304,13 @@ class _$_DotSiteState implements _DotSiteState {
   @JsonKey(defaultValue: const ReticleColor.black())
   @override
   final ReticleColor reticleColor;
+  @JsonKey(defaultValue: const [])
+  @override
+  final List<Setting> settings;
 
   @override
   String toString() {
-    return 'DotSiteState(initializedController: $initializedController, cameraNumber: $cameraNumber, cameraError: $cameraError, page: $page, animationController: $animationController, animationOffset: $animationOffset, settingModalBottomSheetShowed: $settingModalBottomSheetShowed, reticleTop: $reticleTop, reticleLeft: $reticleLeft, reticleSize: $reticleSize, reticleColor: $reticleColor)';
+    return 'DotSiteState(initializedController: $initializedController, cameraNumber: $cameraNumber, cameraError: $cameraError, page: $page, animationController: $animationController, animationOffset: $animationOffset, settingModalBottomSheetShowed: $settingModalBottomSheetShowed, reticleTop: $reticleTop, reticleLeft: $reticleLeft, reticleSize: $reticleSize, reticleColor: $reticleColor, settings: $settings)';
   }
 
   @override
@@ -334,7 +350,10 @@ class _$_DotSiteState implements _DotSiteState {
                     .equals(other.reticleSize, reticleSize)) &&
             (identical(other.reticleColor, reticleColor) ||
                 const DeepCollectionEquality()
-                    .equals(other.reticleColor, reticleColor)));
+                    .equals(other.reticleColor, reticleColor)) &&
+            (identical(other.settings, settings) ||
+                const DeepCollectionEquality()
+                    .equals(other.settings, settings)));
   }
 
   @override
@@ -350,7 +369,8 @@ class _$_DotSiteState implements _DotSiteState {
       const DeepCollectionEquality().hash(reticleTop) ^
       const DeepCollectionEquality().hash(reticleLeft) ^
       const DeepCollectionEquality().hash(reticleSize) ^
-      const DeepCollectionEquality().hash(reticleColor);
+      const DeepCollectionEquality().hash(reticleColor) ^
+      const DeepCollectionEquality().hash(settings);
 
   @override
   _$DotSiteStateCopyWith<_DotSiteState> get copyWith =>
@@ -369,7 +389,8 @@ abstract class _DotSiteState implements DotSiteState {
       @nullable double reticleTop,
       @nullable double reticleLeft,
       double reticleSize,
-      ReticleColor reticleColor}) = _$_DotSiteState;
+      ReticleColor reticleColor,
+      List<Setting> settings}) = _$_DotSiteState;
 
   @override
   @nullable
@@ -399,6 +420,8 @@ abstract class _DotSiteState implements DotSiteState {
   double get reticleSize;
   @override
   ReticleColor get reticleColor;
+  @override
+  List<Setting> get settings;
   @override
   _$DotSiteStateCopyWith<_DotSiteState> get copyWith;
 }

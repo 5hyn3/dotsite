@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:camera/camera.dart';
 import 'package:dotsite/entity/reticle_color.dart';
+import 'package:dotsite/entity/setting.dart';
 import 'package:flutter/animation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -23,5 +24,6 @@ abstract class DotSiteState with _$DotSiteState {
     @nullable double reticleLeft,
     @Default(40) double reticleSize,
     @Default(ReticleColor.black()) ReticleColor reticleColor,
+    @Default([]) List<Setting> settings,
   }) = _DotSiteState;
 }

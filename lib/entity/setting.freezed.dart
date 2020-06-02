@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named
 
-part of 'settings.dart';
+part of 'setting.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -9,18 +9,20 @@ part of 'settings.dart';
 
 T _$identity<T>(T value) => value;
 
-class _$SettingsTearOff {
-  const _$SettingsTearOff();
+class _$SettingTearOff {
+  const _$SettingTearOff();
 
-  _Settings call(
+  _Setting call(
       {@required String name,
+      @nullable int id,
       @nullable int cameraNumber,
       @nullable ReticleColor reticleColor,
       @nullable double reticleTop,
       @nullable double reticleLeft,
       @nullable double reticleSize}) {
-    return _Settings(
+    return _Setting(
       name: name,
+      id: id,
       cameraNumber: cameraNumber,
       reticleColor: reticleColor,
       reticleTop: reticleTop,
@@ -31,10 +33,12 @@ class _$SettingsTearOff {
 }
 
 // ignore: unused_element
-const $Settings = _$SettingsTearOff();
+const $Setting = _$SettingTearOff();
 
-mixin _$Settings {
+mixin _$Setting {
   String get name;
+  @nullable
+  int get id;
   @nullable
   int get cameraNumber;
   @nullable
@@ -46,14 +50,15 @@ mixin _$Settings {
   @nullable
   double get reticleSize;
 
-  $SettingsCopyWith<Settings> get copyWith;
+  $SettingCopyWith<Setting> get copyWith;
 }
 
-abstract class $SettingsCopyWith<$Res> {
-  factory $SettingsCopyWith(Settings value, $Res Function(Settings) then) =
-      _$SettingsCopyWithImpl<$Res>;
+abstract class $SettingCopyWith<$Res> {
+  factory $SettingCopyWith(Setting value, $Res Function(Setting) then) =
+      _$SettingCopyWithImpl<$Res>;
   $Res call(
       {String name,
+      @nullable int id,
       @nullable int cameraNumber,
       @nullable ReticleColor reticleColor,
       @nullable double reticleTop,
@@ -63,16 +68,17 @@ abstract class $SettingsCopyWith<$Res> {
   $ReticleColorCopyWith<$Res> get reticleColor;
 }
 
-class _$SettingsCopyWithImpl<$Res> implements $SettingsCopyWith<$Res> {
-  _$SettingsCopyWithImpl(this._value, this._then);
+class _$SettingCopyWithImpl<$Res> implements $SettingCopyWith<$Res> {
+  _$SettingCopyWithImpl(this._value, this._then);
 
-  final Settings _value;
+  final Setting _value;
   // ignore: unused_field
-  final $Res Function(Settings) _then;
+  final $Res Function(Setting) _then;
 
   @override
   $Res call({
     Object name = freezed,
+    Object id = freezed,
     Object cameraNumber = freezed,
     Object reticleColor = freezed,
     Object reticleTop = freezed,
@@ -81,6 +87,7 @@ class _$SettingsCopyWithImpl<$Res> implements $SettingsCopyWith<$Res> {
   }) {
     return _then(_value.copyWith(
       name: name == freezed ? _value.name : name as String,
+      id: id == freezed ? _value.id : id as int,
       cameraNumber:
           cameraNumber == freezed ? _value.cameraNumber : cameraNumber as int,
       reticleColor: reticleColor == freezed
@@ -106,12 +113,13 @@ class _$SettingsCopyWithImpl<$Res> implements $SettingsCopyWith<$Res> {
   }
 }
 
-abstract class _$SettingsCopyWith<$Res> implements $SettingsCopyWith<$Res> {
-  factory _$SettingsCopyWith(_Settings value, $Res Function(_Settings) then) =
-      __$SettingsCopyWithImpl<$Res>;
+abstract class _$SettingCopyWith<$Res> implements $SettingCopyWith<$Res> {
+  factory _$SettingCopyWith(_Setting value, $Res Function(_Setting) then) =
+      __$SettingCopyWithImpl<$Res>;
   @override
   $Res call(
       {String name,
+      @nullable int id,
       @nullable int cameraNumber,
       @nullable ReticleColor reticleColor,
       @nullable double reticleTop,
@@ -122,25 +130,27 @@ abstract class _$SettingsCopyWith<$Res> implements $SettingsCopyWith<$Res> {
   $ReticleColorCopyWith<$Res> get reticleColor;
 }
 
-class __$SettingsCopyWithImpl<$Res> extends _$SettingsCopyWithImpl<$Res>
-    implements _$SettingsCopyWith<$Res> {
-  __$SettingsCopyWithImpl(_Settings _value, $Res Function(_Settings) _then)
-      : super(_value, (v) => _then(v as _Settings));
+class __$SettingCopyWithImpl<$Res> extends _$SettingCopyWithImpl<$Res>
+    implements _$SettingCopyWith<$Res> {
+  __$SettingCopyWithImpl(_Setting _value, $Res Function(_Setting) _then)
+      : super(_value, (v) => _then(v as _Setting));
 
   @override
-  _Settings get _value => super._value as _Settings;
+  _Setting get _value => super._value as _Setting;
 
   @override
   $Res call({
     Object name = freezed,
+    Object id = freezed,
     Object cameraNumber = freezed,
     Object reticleColor = freezed,
     Object reticleTop = freezed,
     Object reticleLeft = freezed,
     Object reticleSize = freezed,
   }) {
-    return _then(_Settings(
+    return _then(_Setting(
       name: name == freezed ? _value.name : name as String,
+      id: id == freezed ? _value.id : id as int,
       cameraNumber:
           cameraNumber == freezed ? _value.cameraNumber : cameraNumber as int,
       reticleColor: reticleColor == freezed
@@ -156,9 +166,10 @@ class __$SettingsCopyWithImpl<$Res> extends _$SettingsCopyWithImpl<$Res>
   }
 }
 
-class _$_Settings implements _Settings {
-  const _$_Settings(
+class _$_Setting implements _Setting {
+  const _$_Setting(
       {@required this.name,
+      @nullable this.id,
       @nullable this.cameraNumber,
       @nullable this.reticleColor,
       @nullable this.reticleTop,
@@ -168,6 +179,9 @@ class _$_Settings implements _Settings {
 
   @override
   final String name;
+  @override
+  @nullable
+  final int id;
   @override
   @nullable
   final int cameraNumber;
@@ -186,15 +200,17 @@ class _$_Settings implements _Settings {
 
   @override
   String toString() {
-    return 'Settings(name: $name, cameraNumber: $cameraNumber, reticleColor: $reticleColor, reticleTop: $reticleTop, reticleLeft: $reticleLeft, reticleSize: $reticleSize)';
+    return 'Setting(name: $name, id: $id, cameraNumber: $cameraNumber, reticleColor: $reticleColor, reticleTop: $reticleTop, reticleLeft: $reticleLeft, reticleSize: $reticleSize)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Settings &&
+        (other is _Setting &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.cameraNumber, cameraNumber) ||
                 const DeepCollectionEquality()
                     .equals(other.cameraNumber, cameraNumber)) &&
@@ -216,6 +232,7 @@ class _$_Settings implements _Settings {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(cameraNumber) ^
       const DeepCollectionEquality().hash(reticleColor) ^
       const DeepCollectionEquality().hash(reticleTop) ^
@@ -223,21 +240,25 @@ class _$_Settings implements _Settings {
       const DeepCollectionEquality().hash(reticleSize);
 
   @override
-  _$SettingsCopyWith<_Settings> get copyWith =>
-      __$SettingsCopyWithImpl<_Settings>(this, _$identity);
+  _$SettingCopyWith<_Setting> get copyWith =>
+      __$SettingCopyWithImpl<_Setting>(this, _$identity);
 }
 
-abstract class _Settings implements Settings {
-  const factory _Settings(
+abstract class _Setting implements Setting {
+  const factory _Setting(
       {@required String name,
+      @nullable int id,
       @nullable int cameraNumber,
       @nullable ReticleColor reticleColor,
       @nullable double reticleTop,
       @nullable double reticleLeft,
-      @nullable double reticleSize}) = _$_Settings;
+      @nullable double reticleSize}) = _$_Setting;
 
   @override
   String get name;
+  @override
+  @nullable
+  int get id;
   @override
   @nullable
   int get cameraNumber;
@@ -254,5 +275,5 @@ abstract class _Settings implements Settings {
   @nullable
   double get reticleSize;
   @override
-  _$SettingsCopyWith<_Settings> get copyWith;
+  _$SettingCopyWith<_Setting> get copyWith;
 }

@@ -1,8 +1,8 @@
 import "package:objectbox/objectbox.dart";
 
-import '../../entity/settings.dart' as SettingsEntity;
+import '../../entity/setting.dart' as SettingEntity;
 @Entity()
-class Settings {
+class Setting {
   @Id()
   int id;
   String name;
@@ -12,10 +12,10 @@ class Settings {
   double reticleLeft;
   double reticleSize;
 
-  Settings(
+  Setting(
       {name, cameraNumber, reticleColor, reticleTop, reticleLeft, reticleSize});
 
-  Settings.construct(SettingsEntity.Settings settings) {
+  Setting.construct(SettingEntity.Setting settings) {
     name = settings.name;
     cameraNumber = settings.cameraNumber;
     reticleColor = settings.reticleColor.toString();
