@@ -182,34 +182,33 @@ class ChangeReticlePositionButtons extends StatelessWidget {
 class PositionableReticle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final state = context.read<DotSiteState>();
-
-    final positionOffset = state.reticleSize;
-    final screenSize = MediaQuery.of(context).size;
-
-    final top = state.reticleTop ??
-        () {
-          // TODO: 画面の中央座標を取得する処理を実装する
-          // final initialHeight = screenSize.height / 2 - positionOffset - 20;
-          final initialHeight = 176.3;
-          WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
-            context.read<DotSiteStateNotifier>().setTop(initialHeight);
-          });
-          return initialHeight;
-        }();
-
-    final left = state.reticleLeft ??
-        () {
-          // TODO: 画面の中央座標を取得する処理を実装する
-          // final initialWidth = screenSize.width / 2 - positionOffset + 20;
-          final initialWidth = 395.7;
-          WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
-            context.read<DotSiteStateNotifier>().setLeft(initialWidth);
-          });
-          return initialWidth;
-        }();
-
     return context.select((DotSiteState s) {
+      final state = s;
+
+      final positionOffset = state.reticleSize;
+      final screenSize = MediaQuery.of(context).size;
+
+      final top = state.reticleTop ??
+              () {
+            // TODO: 画面の中央座標を取得する処理を実装する
+            // final initialHeight = screenSize.height / 2 - positionOffset - 20;
+            final initialHeight = 176.3;
+            WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
+              context.read<DotSiteStateNotifier>().setTop(initialHeight);
+            });
+            return initialHeight;
+          }();
+
+      final left = state.reticleLeft ??
+              () {
+            // TODO: 画面の中央座標を取得する処理を実装する
+            // final initialWidth = screenSize.width / 2 - positionOffset + 20;
+            final initialWidth = 395.7;
+            WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
+              context.read<DotSiteStateNotifier>().setLeft(initialWidth);
+            });
+            return initialWidth;
+          }();
       return Positioned(
           top: s.reticleTop ?? top,
           left: s.reticleLeft ?? left,
@@ -326,8 +325,7 @@ class Settings extends StatelessWidget {
           context.read<DotSiteStateNotifier>().changeCamera(newValue);
         },
         items: context
-            .read<DotSiteStateNotifier>()
-            .availableRearCameraNumbers
+            .select((DotSiteStateNotifier value) => value.availableRearCameraNumbers)
             .map<DropdownMenuItem<int>>((int value) {
           return DropdownMenuItem(
             value: value,
