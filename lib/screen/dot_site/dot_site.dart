@@ -1,6 +1,5 @@
 import 'package:dotsite/entity/camera_error.dart';
 import 'package:dotsite/entity/reticle_color.dart';
-import 'package:dotsite/repository/setting_repository.dart';
 import 'dot_site_state.dart';
 import 'dot_site_state_notifier.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,6 @@ class DotSite extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          Provider<SettingRepository>(create: (_) => SettingRepository()),
           VsyncProvider(isSingleTicker: false),
           StateNotifierProvider<DotSiteStateNotifier, DotSiteState>(
               create: (BuildContext context) {
