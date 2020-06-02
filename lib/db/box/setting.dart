@@ -1,6 +1,6 @@
 import "package:objectbox/objectbox.dart";
 
-import '../../entity/setting.dart' as SettingEntity;
+import 'package:dotsite/entity/setting.dart' as setting_entity;
 @Entity()
 class Setting {
   @Id()
@@ -15,7 +15,7 @@ class Setting {
   Setting(
       {name, cameraNumber, reticleColor, reticleTop, reticleLeft, reticleSize});
 
-  Setting.construct(SettingEntity.Setting settings) {
+  Setting.construct(setting_entity.Setting settings) {
     name = settings.name;
     cameraNumber = settings.cameraNumber;
     reticleColor = settings.reticleColor.toString();

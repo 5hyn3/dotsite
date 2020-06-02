@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:dotsite/db/box/setting.dart' as SettingBox;
+import 'package:dotsite/db/box/setting.dart' as setting_box;
 import 'package:dotsite/entity/reticle_color.dart';
 import 'package:dotsite/entity/setting.dart';
 
@@ -17,7 +17,7 @@ class SettingRepository {
   SettingRepository() {
     _initTask = getApplicationDocumentsDirectory();
     _initTask.then((dir) {
-      _box = Box<SettingBox.Setting>(Store(getObjectBoxModel(), directory: dir.path + "/objectbox"));
+      _box = Box<setting_box.Setting>(Store(getObjectBoxModel(), directory: dir.path + "/objectbox"));
     });
   }
 
@@ -51,6 +51,6 @@ class SettingRepository {
 
   Future<void> saveSetting(Setting setting) async {
     await _initTask;
-    _box.put(SettingBox.Setting.construct(setting));
+    _box.put(setting_box.Setting.construct(setting));
   }
 }
