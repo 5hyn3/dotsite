@@ -2,11 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dotsite/db/box/setting.dart' as setting_box;
-import 'package:dotsite/db/box/setting_extension.dart';
 import 'package:dotsite/entity/reticle_color.dart';
 import 'package:dotsite/entity/setting.dart';
-
-import '../objectbox.g.dart';
+import 'package:dotsite/objectbox.g.dart';
 
 import 'package:path_provider/path_provider.dart';
 
@@ -45,20 +43,10 @@ class SettingRepository {
       id: settingBox.id,
       name: settingBox.name,
       cameraNumber: settingBox.cameraNumber,
-      reticleColor: ReticleColor.fromString(this.reticleColor),
+      reticleColor: ReticleColor.fromString(settingBox.reticleColor),
       reticleTop: settingBox.reticleTop,
       reticleLeft: settingBox.reticleLeft,
       reticleSize: settingBox.reticleSize,
     );
-  }
-}
-
-extension IndexedMap<T, E> on List<T> {
-  List<E> indexedMap<E>(E Function(int index, T item) function) {
-    final list = <E>[];
-    asMap().forEach((index, element) {
-      list.add(function(index, element));
-    });
-    return list;
   }
 }
