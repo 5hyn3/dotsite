@@ -125,9 +125,9 @@ class Settings extends StatelessWidget {
                         Column(
                           children: <Widget>[
                             TextField(
-                              controller: context
-                                  .read<DotSiteStateNotifier>()
-                                  .settingNameTextEditingController,
+                              controller: context.select(
+                                  (DotSiteStateNotifier s) =>
+                                      s.settingNameTextEditingController),
                               decoration: InputDecoration(
                                 labelText: '設定の名前を入力してください',
                               ),

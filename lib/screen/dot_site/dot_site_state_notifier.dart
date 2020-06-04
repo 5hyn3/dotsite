@@ -12,21 +12,21 @@ import 'package:flutter/material.dart';
 import 'dot_site_state.dart';
 import 'package:state_notifier/state_notifier.dart';
 
-class DotSiteStateNotifier extends StateNotifier<DotSiteState> with LocatorMixin {
-
+class DotSiteStateNotifier extends StateNotifier<DotSiteState>
+    with LocatorMixin {
   SettingRepository get _settingRepository => read();
 
   List<int> availableRearCameraNumbers = [];
 
-  TextEditingController settingNameTextEditingController = TextEditingController();
+  TextEditingController settingNameTextEditingController =
+      TextEditingController();
 
   DotSiteStateNotifier()
       : super(const DotSiteState(
           initializedController: null,
           reticleTop: null,
           reticleLeft: null,
-        )) {
-  }
+        )) {}
 
   @override
   void initState() {
@@ -180,20 +180,25 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState> with LocatorMixin
   void saveNowSetting() {
     final name = settingNameTextEditingController.text;
     if (name.isEmpty) return;
-    _settingRepository.saveSetting(Setting(
+    _settingRepository
+        .saveSetting(Setting(
       name: name,
       cameraNumber: state.cameraNumber,
       reticleSize: state.reticleSize,
       reticleColor: state.reticleColor,
       reticleTop: state.reticleTop,
       reticleLeft: state.reticleLeft,
-    )).then((value) => _getAllSettings());
+    ))
+        .then((_) {
+      settingNameTextEditingController.clear();
+      _getAllSettings();
+    });
   }
 
   void _getAllSettings() {
-    _settingRepository.getAllSettings().then(
-            (value) => state = state.copyWith(settings: value)
-    );
+    _settingRepository
+        .getAllSettings()
+        .then((value) => state = state.copyWith(settings: value));
   }
 
   void _initializeCameraControllerWithCameraNumber(
@@ -212,7 +217,7 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState> with LocatorMixin
         return;
       }
       CameraController controller =
-      new CameraController(camera, ResolutionPreset.ultraHigh);
+          new CameraController(camera, ResolutionPreset.ultraHigh);
       controller.initialize().then((_) {
         if (!mounted) {
           return;
