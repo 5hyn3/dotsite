@@ -7,10 +7,9 @@ import 'package:provider/provider.dart';
 class AnimatedChangeReticlePositionButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return context.select((DotSiteState s) {
-      return SlideTransition(
-          position: s.animationOffset, child: ChangeReticlePositionButtons());
-    });
+    return SlideTransition(
+        position: context.select((DotSiteState s) => s.animationOffset),
+        child: ChangeReticlePositionButtons());
   }
 }
 

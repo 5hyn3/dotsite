@@ -10,14 +10,13 @@ class PositionableReticle extends StatelessWidget {
     return context.select((DotSiteState s) {
       final state = s;
 
-      final positionOffset = state.reticleSize;
+      final positionOffset = state.reticleSize / 2;
       final screenSize = MediaQuery.of(context).size;
 
       final top = state.reticleTop ??
           () {
-            // TODO: 画面の中央座標を取得する処理を実装する
-            // final initialHeight = screenSize.height / 2 - positionOffset - 20;
-            final initialHeight = 176.3;
+            final initialHeight = screenSize.height / 2 - positionOffset;
+            //final initialHeight = 176.3;
             WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
               context.read<DotSiteStateNotifier>().setTop(initialHeight);
             });
@@ -26,19 +25,18 @@ class PositionableReticle extends StatelessWidget {
 
       final left = state.reticleLeft ??
           () {
-            // TODO: 画面の中央座標を取得する処理を実装する
-            // final initialWidth = screenSize.width / 2 - positionOffset + 20;
-            final initialWidth = 395.7;
+            final initialWidth = screenSize.width / 2 - positionOffset;
+            //final initialWidth = 395.7;
             WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
               context.read<DotSiteStateNotifier>().setLeft(initialWidth);
             });
             return initialWidth;
           }();
       return Positioned(
-          top: s.reticleTop ?? top,
-          left: s.reticleLeft ?? left,
-          width: positionOffset,
-          height: positionOffset,
+          top: top,
+          left: left,
+          width: state.reticleSize,
+          height: state.reticleSize,
           child: Icon(Icons.add,
               size: s.reticleSize,
               color: s.reticleColor
