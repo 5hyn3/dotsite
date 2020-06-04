@@ -8,24 +8,22 @@ class PositionableReticle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return context.select((DotSiteState s) {
-      final state = s;
-
-      final positionOffset = state.reticleSize / 2;
+      final positionOffset = s.reticleSize / 2;
       final screenSize = MediaQuery.of(context).size;
 
-      final top = state.reticleTop ??
+      final top = s.reticleTop ??
           () {
-            final initialHeight = screenSize.height / 2 - positionOffset;
-            WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
-              context.read<DotSiteStateNotifier>().setTop(initialHeight);
+            final initialTop = screenSize.height / 2 - positionOffset;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.read<DotSiteStateNotifier>().setTop(initialTop);
             });
-            return initialHeight;
+            return initialTop;
           }();
 
-      final left = state.reticleLeft ??
+      final left = s.reticleLeft ??
           () {
             final initialWidth = screenSize.width / 2 - positionOffset;
-            WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
               context.read<DotSiteStateNotifier>().setLeft(initialWidth);
             });
             return initialWidth;
@@ -33,8 +31,8 @@ class PositionableReticle extends StatelessWidget {
       return Positioned(
           top: top,
           left: left,
-          width: state.reticleSize,
-          height: state.reticleSize,
+          width: s.reticleSize,
+          height: s.reticleSize,
           child: Icon(Icons.add,
               size: s.reticleSize,
               color: s.reticleColor
