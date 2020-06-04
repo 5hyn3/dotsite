@@ -16,7 +16,6 @@ class PositionableReticle extends StatelessWidget {
       final top = state.reticleTop ??
           () {
             final initialHeight = screenSize.height / 2 - positionOffset;
-            //final initialHeight = 176.3;
             WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
               context.read<DotSiteStateNotifier>().setTop(initialHeight);
             });
@@ -26,7 +25,6 @@ class PositionableReticle extends StatelessWidget {
       final left = state.reticleLeft ??
           () {
             final initialWidth = screenSize.width / 2 - positionOffset;
-            //final initialWidth = 395.7;
             WidgetsBinding.instance.addPostFrameCallback((Duration timeStamp) {
               context.read<DotSiteStateNotifier>().setLeft(initialWidth);
             });
