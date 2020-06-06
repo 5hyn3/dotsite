@@ -9,7 +9,7 @@ import 'package:dotsite/objectbox.g.dart';
 import 'package:path_provider/path_provider.dart';
 
 class SettingRepository {
-  Box _box;
+  Box<setting_box.Setting> _box;
 
   Future<Directory> _initTask;
 
@@ -23,13 +23,13 @@ class SettingRepository {
 
   Future<Setting> getSetting(int id) async {
     await _initTask;
-    final raw = _box.get(id);
+    final setting_box.Setting raw = _box.get(id);
     return _settingBoxToEntity(raw);
   }
 
   Future<List<Setting>> getAllSettings() async {
     await _initTask;
-    final raws = _box.getAll();
+    final List<setting_box.Setting> raws = _box.getAll();
     return raws.map((r) => _settingBoxToEntity(r)).toList();
   }
 

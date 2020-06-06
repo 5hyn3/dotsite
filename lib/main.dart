@@ -4,17 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIOverlays([]);
-  SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight])
-      .then((_) {
-    runApp(MultiProvider(
-      providers: [
-        Provider<SettingRepository>(create: (_) => SettingRepository()),
-      ],
-      child: DotSite(),
-    ));
-  });
+  await SystemChrome.setEnabledSystemUIOverlays([]);
+  await SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+  runApp(MultiProvider(
+    providers: [
+      Provider<SettingRepository>(create: (_) => SettingRepository()),
+    ],
+    child: const DotSite(),
+  ));
 }

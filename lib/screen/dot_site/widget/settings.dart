@@ -5,15 +5,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Settings extends StatelessWidget {
+  const Settings();
   @override
   Widget build(BuildContext context) {
-    var leftWidgets = [
-      Text("レティクル"),
-      Text("色"),
+    final List<Widget> leftWidgets = [
+      const Text(
+        "レティクル",
+        style: const TextStyle(
+          fontSize: 16,
+        ),
+      ),
+      const Divider(),
+      const Text(
+        "色",
+      ),
       DropdownButton(
         value: context.select((DotSiteState s) => s.reticleColor),
         elevation: 16,
-        style: TextStyle(color: Colors.deepPurple),
+        style: const TextStyle(color: Colors.deepPurple),
         underline: Container(
           height: 2,
           color: Colors.deepPurpleAccent,
@@ -21,7 +30,7 @@ class Settings extends StatelessWidget {
         onChanged: (ReticleColor newValue) {
           context.read<DotSiteStateNotifier>().setReticleColor(newValue);
         },
-        items: [ReticleColor.black(), ReticleColor.white()]
+        items: [const ReticleColor.black(), const ReticleColor.white()]
             .map<DropdownMenuItem<ReticleColor>>((ReticleColor value) {
           return DropdownMenuItem(
             value: value,
@@ -29,7 +38,7 @@ class Settings extends StatelessWidget {
           );
         }).toList(),
       ),
-      Text("サイズ"),
+      const Text("サイズ"),
       Slider(
         value: context.select((DotSiteState s) => s.reticleSize),
         min: 20,
@@ -38,11 +47,17 @@ class Settings extends StatelessWidget {
           context.read<DotSiteStateNotifier>().setSize(value);
         },
       ),
-      Text("カメラ選択"),
+      const Text(
+        "カメラ選択",
+        style: const TextStyle(
+          fontSize: 16,
+        ),
+      ),
+      const Divider(),
       DropdownButton(
         value: context.select((DotSiteState s) => s.cameraNumber),
         elevation: 16,
-        style: TextStyle(color: Colors.deepPurple),
+        style: const TextStyle(color: Colors.deepPurple),
         underline: Container(
           height: 2,
           color: Colors.deepPurpleAccent,
@@ -60,17 +75,36 @@ class Settings extends StatelessWidget {
           );
         }).toList(),
       ),
+      const Text(
+        "その他の操作",
+        style: const TextStyle(
+          fontSize: 16,
+        ),
+      ),
+      const Divider(),
       InkWell(
-        onTap: () {
-          showSaveSettingDialog(context);
-        },
-        child: Text("設定の保存"),
+        onTap: () => showSaveSettingDialog(context),
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: const Text(
+            "設定の保存",
+            style: const TextStyle(
+              fontSize: 16,
+            ),
+          ),
+        ),
       ),
       InkWell(
-        onTap: () {
-          showAboutDialog(context: context);
-        },
-        child: Text("このアプリについて"),
+        onTap: () => showAboutDialog(context: context),
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          child: const Text(
+            "このアプリについて",
+            style: const TextStyle(
+              fontSize: 16,
+            ),
+          ),
+        ),
       ),
     ];
     return Row(
@@ -79,17 +113,17 @@ class Settings extends StatelessWidget {
           flex: 1,
           child: Column(
             children: <Widget>[
-              Text("設定"),
+              const Text("設定"),
               Flexible(child: ListView(children: leftWidgets)),
             ],
           ),
         ),
-        VerticalDivider(),
+        const VerticalDivider(),
         Expanded(
           flex: 1,
           child: Column(
             children: <Widget>[
-              Text("設定の読み込み"),
+              const Text("設定の読み込み"),
               Flexible(
                   child: ListView(
                       children: context.select((DotSiteState s) => s.settings
@@ -100,7 +134,9 @@ class Settings extends StatelessWidget {
                                     .applySettingById(e.id);
                                 Navigator.pop(context);
                               },
-                              child: Text(e.name)))
+                              child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Text(e.name))))
                           .toList()))),
             ],
           ),
@@ -109,8 +145,8 @@ class Settings extends StatelessWidget {
     );
   }
 
-  Future showSaveSettingDialog(BuildContext context) {
-    return showDialog(
+  void showSaveSettingDialog(BuildContext context) {
+    showDialog<void>(
         context: context,
         barrierDismissible: false,
         builder: (context) {
@@ -118,7 +154,7 @@ class Settings extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 AlertDialog(
-                  title: Text("設定の保存"),
+                  title: const Text("設定の保存"),
                   content: SingleChildScrollView(
                     child: ListBody(
                       children: <Widget>[
@@ -128,7 +164,7 @@ class Settings extends StatelessWidget {
                               controller: context.select(
                                   (DotSiteStateNotifier s) =>
                                       s.settingNameTextEditingController),
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 labelText: '設定の名前を入力してください',
                               ),
                             ),

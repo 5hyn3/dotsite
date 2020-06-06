@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PositionableReticle extends StatelessWidget {
+  const PositionableReticle();
   @override
   Widget build(BuildContext context) {
     return context.select((DotSiteState s) {
@@ -13,7 +14,7 @@ class PositionableReticle extends StatelessWidget {
 
       final top = s.reticleTop ??
           () {
-            final initialTop = screenSize.height / 2 - positionOffset;
+            final initialTop = screenSize.height / 2;
             WidgetsBinding.instance.addPostFrameCallback((_) {
               context.read<DotSiteStateNotifier>().setTop(initialTop);
             });
@@ -22,15 +23,15 @@ class PositionableReticle extends StatelessWidget {
 
       final left = s.reticleLeft ??
           () {
-            final initialWidth = screenSize.width / 2 - positionOffset;
+            final initialWidth = screenSize.width / 2;
             WidgetsBinding.instance.addPostFrameCallback((_) {
               context.read<DotSiteStateNotifier>().setLeft(initialWidth);
             });
             return initialWidth;
           }();
       return Positioned(
-          top: top,
-          left: left,
+          top: top - positionOffset,
+          left: left - positionOffset,
           width: s.reticleSize,
           height: s.reticleSize,
           child: Icon(Icons.add,

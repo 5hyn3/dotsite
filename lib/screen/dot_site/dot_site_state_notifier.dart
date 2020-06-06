@@ -6,10 +6,10 @@ import 'package:dotsite/entity/camera_error.dart';
 import 'package:dotsite/entity/reticle_color.dart';
 import 'package:dotsite/entity/setting.dart';
 import 'package:dotsite/repository/setting_repository.dart';
+import 'package:dotsite/screen/dot_site/dot_site_state.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
-import 'dot_site_state.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 class DotSiteStateNotifier extends StateNotifier<DotSiteState>
@@ -174,6 +174,7 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState>
         reticleTop: value.reticleTop,
         reticleLeft: value.reticleLeft,
       );
+      _initializeCameraControllerWithCameraNumber(value.cameraNumber, false);
     });
   }
 
@@ -217,7 +218,7 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState>
         return;
       }
       CameraController controller =
-          new CameraController(camera, ResolutionPreset.ultraHigh);
+          CameraController(camera, ResolutionPreset.ultraHigh);
       controller.initialize().then((_) {
         if (!mounted) {
           return;
@@ -228,7 +229,7 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState>
         if (err is CameraException) {
           if (isRetry) return;
           state = state.copyWith(
-              cameraError: CameraError.selectedCameraCanNotUseError());
+              cameraError: const CameraError.selectedCameraCanNotUseError());
           _initializeCameraControllerWithCameraNumber(state.cameraNumber, true);
         }
       });

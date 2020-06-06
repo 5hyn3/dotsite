@@ -24,6 +24,6 @@ abstract class DotSiteState with _$DotSiteState {
     @nullable double reticleLeft,
     @Default(40) double reticleSize,
     @Default(ReticleColor.black()) ReticleColor reticleColor,
-    @Default([]) List<Setting> settings,
+    @Default(<Setting>[]) List<Setting> settings,
   }) = _DotSiteState;
 }

@@ -5,22 +5,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AnimatedChangeReticlePositionButtons extends StatelessWidget {
+  const AnimatedChangeReticlePositionButtons();
   @override
   Widget build(BuildContext context) {
     return SlideTransition(
         position: context.select((DotSiteState s) => s.animationOffset),
-        child: ChangeReticlePositionButtons());
+        child: const ChangeReticlePositionButtons());
   }
 }
 
 class ChangeReticlePositionButtons extends StatelessWidget {
+  const ChangeReticlePositionButtons();
   @override
   Widget build(BuildContext context) {
     return Row(children: [
       Expanded(
           flex: 1,
           child: Container(
-              margin: EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(10.0),
               child: GestureDetector(
                 onLongPressStart: (details) => context
                     .read<DotSiteStateNotifier>()
@@ -39,7 +41,7 @@ class ChangeReticlePositionButtons extends StatelessWidget {
       Expanded(
           flex: 1,
           child: Container(
-              margin: EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(10.0),
               child: GestureDetector(
                 onLongPressStart: (details) =>
                     context.read<DotSiteStateNotifier>().startPlusTopLongMove(),
@@ -57,7 +59,7 @@ class ChangeReticlePositionButtons extends StatelessWidget {
       Expanded(
           flex: 1,
           child: Container(
-              margin: EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(10.0),
               child: GestureDetector(
                 onLongPressStart: (details) => context
                     .read<DotSiteStateNotifier>()
@@ -76,7 +78,7 @@ class ChangeReticlePositionButtons extends StatelessWidget {
       Expanded(
           flex: 1,
           child: Container(
-              margin: EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(10.0),
               child: GestureDetector(
                 onLongPressStart: (details) => context
                     .read<DotSiteStateNotifier>()
