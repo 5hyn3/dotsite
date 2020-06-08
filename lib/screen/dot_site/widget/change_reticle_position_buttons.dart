@@ -21,79 +21,64 @@ class ChangeReticlePositionButtons extends StatelessWidget {
     return Row(children: [
       Expanded(
           flex: 1,
-          child: Container(
-              margin: const EdgeInsets.all(10.0),
-              child: GestureDetector(
-                onLongPressStart: (details) => context
-                    .read<DotSiteStateNotifier>()
-                    .startMinusTopLongMove(),
-                onLongPressEnd: (details) =>
-                    context.read<DotSiteStateNotifier>().endMinusTopLongMove(),
-                child: RaisedButton(
-                  child: Icon(Icons.arrow_drop_up),
-                  color: Colors.orange,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    context.read<DotSiteStateNotifier>().minusOneTop();
-                  },
-                ),
-              ))),
+          child: _getPositionButton(
+            icon: Icon(Icons.arrow_upward),
+            onPressed: () => context.read<DotSiteStateNotifier>().minusOneTop(),
+            onLongPressStart: (_) =>
+                context.read<DotSiteStateNotifier>().startMinusTopLongMove(),
+            onLongPressEnd: (_) =>
+                context.read<DotSiteStateNotifier>().endMinusTopLongMove(),
+          )),
       Expanded(
           flex: 1,
-          child: Container(
-              margin: const EdgeInsets.all(10.0),
-              child: GestureDetector(
-                onLongPressStart: (details) =>
-                    context.read<DotSiteStateNotifier>().startPlusTopLongMove(),
-                onLongPressEnd: (details) =>
-                    context.read<DotSiteStateNotifier>().endPlusTopLongMove(),
-                child: RaisedButton(
-                  child: Icon(Icons.arrow_drop_down),
-                  color: Colors.orange,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    context.read<DotSiteStateNotifier>().plusOneTop();
-                  },
-                ),
-              ))),
+          child: _getPositionButton(
+            icon: Icon(Icons.arrow_downward),
+            onPressed: () => context.read<DotSiteStateNotifier>().plusOneTop(),
+            onLongPressStart: (_) =>
+                context.read<DotSiteStateNotifier>().startPlusTopLongMove(),
+            onLongPressEnd: (_) =>
+                context.read<DotSiteStateNotifier>().endPlusTopLongMove(),
+          )),
       Expanded(
           flex: 1,
-          child: Container(
-              margin: const EdgeInsets.all(10.0),
-              child: GestureDetector(
-                onLongPressStart: (details) => context
-                    .read<DotSiteStateNotifier>()
-                    .startMinusLeftLongMove(),
-                onLongPressEnd: (details) =>
-                    context.read<DotSiteStateNotifier>().endMinusLeftLongMove(),
-                child: RaisedButton(
-                  child: Icon(Icons.arrow_back),
-                  color: Colors.orange,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    context.read<DotSiteStateNotifier>().minusOneLeft();
-                  },
-                ),
-              ))),
+          child: _getPositionButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () =>
+                context.read<DotSiteStateNotifier>().minusOneLeft(),
+            onLongPressStart: (_) =>
+                context.read<DotSiteStateNotifier>().startMinusLeftLongMove(),
+            onLongPressEnd: (_) =>
+                context.read<DotSiteStateNotifier>().endMinusLeftLongMove(),
+          )),
       Expanded(
           flex: 1,
-          child: Container(
-              margin: const EdgeInsets.all(10.0),
-              child: GestureDetector(
-                onLongPressStart: (details) => context
-                    .read<DotSiteStateNotifier>()
-                    .startPlusLeftLongMove(),
-                onLongPressEnd: (details) =>
-                    context.read<DotSiteStateNotifier>().endPlusLeftLongMove(),
-                child: RaisedButton(
-                  child: Icon(Icons.arrow_forward),
-                  color: Colors.orange,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    context.read<DotSiteStateNotifier>().plusOneLeft();
-                  },
-                ),
-              ))),
+          child: _getPositionButton(
+            icon: Icon(Icons.arrow_forward),
+            onPressed: () => context.read<DotSiteStateNotifier>().plusOneLeft(),
+            onLongPressStart: (_) =>
+                context.read<DotSiteStateNotifier>().startPlusLeftLongMove(),
+            onLongPressEnd: (_) =>
+                context.read<DotSiteStateNotifier>().endPlusLeftLongMove(),
+          )),
     ]);
+  }
+
+  Widget _getPositionButton(
+      {@required Icon icon,
+      @required VoidCallback onPressed,
+      @required GestureLongPressStartCallback onLongPressStart,
+      @required GestureLongPressEndCallback onLongPressEnd}) {
+    return Container(
+        margin: const EdgeInsets.all(10.0),
+        child: GestureDetector(
+          onLongPressStart: onLongPressStart,
+          onLongPressEnd: onLongPressEnd,
+          child: RaisedButton(
+            child: icon,
+            color: Colors.orange,
+            textColor: Colors.white,
+            onPressed: onPressed,
+          ),
+        ));
   }
 }

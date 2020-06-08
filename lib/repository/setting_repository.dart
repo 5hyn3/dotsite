@@ -38,6 +38,11 @@ class SettingRepository {
     _box.put(setting_box.Setting.construct(setting));
   }
 
+  Future<void> deleteSetting(int id) async {
+    await _initTask;
+    _box.remove(id);
+  }
+
   Setting _settingBoxToEntity(setting_box.Setting settingBox) {
     return Setting(
       id: settingBox.id,

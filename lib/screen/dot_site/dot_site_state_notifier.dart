@@ -44,6 +44,10 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState>
     _initializeCameraControllerWithCameraNumber(cameraNumber, false);
   }
 
+  void connectCamera() {
+    _initializeCameraControllerWithCameraNumber(state.cameraNumber, false);
+  }
+
   void consumeError() {
     state = state.copyWith(cameraError: null);
   }
@@ -194,6 +198,10 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState>
       settingNameTextEditingController.clear();
       _getAllSettings();
     });
+  }
+
+  void deleteSetting(int id) {
+    _settingRepository.deleteSetting(id).then((value) => _getAllSettings());
   }
 
   void _getAllSettings() {

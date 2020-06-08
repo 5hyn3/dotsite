@@ -3,6 +3,7 @@ import 'package:dotsite/entity/camera_error.dart';
 import 'package:dotsite/screen/dot_site/dot_site_state.dart';
 import 'package:dotsite/screen/dot_site/dot_site_state_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:provider/provider.dart';
@@ -24,6 +25,13 @@ class Preview extends StatelessWidget {
         context.read<DotSiteStateNotifier>().consumeError();
       });
     }
+
+    SystemChannels.lifecycle.setMessageHandler((msg) {
+      if (msg == 'AppLifecycleState.resumed') {
+        context.read<DotSiteStateNotifier>().connectCamera();
+      }
+      return null;
+    });
 
     final CameraController controller =
         context.select((DotSiteState s) => s.initializedController);

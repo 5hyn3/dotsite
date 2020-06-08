@@ -7,6 +7,7 @@ import 'package:dotsite/screen/dot_site/widget/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:vsync_provider/vsync_provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:provider/provider.dart';
 
@@ -33,6 +34,13 @@ class DotSite extends StatelessWidget {
           })
         ],
         child: MaterialApp(
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            const Locale('ja', 'JP'),
+          ],
           title: 'Dot Site',
           theme: ThemeData(
             primarySwatch: Colors.blue,

@@ -127,16 +127,37 @@ class Settings extends StatelessWidget {
               Flexible(
                   child: ListView(
                       children: context.select((DotSiteState s) => s.settings
-                          .map((e) => InkWell(
-                              onTap: () {
-                                context
-                                    .read<DotSiteStateNotifier>()
-                                    .applySettingById(e.id);
-                                Navigator.pop(context);
-                              },
-                              child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Text(e.name))))
+                          .map((e) => Container(
+                                child: Stack(children: <Widget>[
+                                  Positioned.fill(
+                                    child: InkWell(
+                                        child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            e.name,
+                                            textAlign: TextAlign.left,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          context
+                                              .read<DotSiteStateNotifier>()
+                                              .applySettingById(e.id);
+                                          Navigator.pop(context);
+                                        }),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: IconButton(
+                                      icon: Icon(Icons.delete_outline),
+                                      onPressed: () => showDeleteSettingDialog(
+                                          context, e.name, e.id),
+                                    ),
+                                  )
+                                ]),
+                              ))
                           .toList()))),
             ],
           ),
@@ -183,6 +204,47 @@ class Settings extends StatelessWidget {
                         child: const Text('保存する'),
                         onPressed: () {
                           context.read<DotSiteStateNotifier>().saveNowSetting();
+                          Navigator.pop(context);
+                        })
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  void showDeleteSettingDialog(BuildContext context, String name, int id) {
+    showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                AlertDialog(
+                  title: const Text("設定の削除"),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[Text("「$name」を削除します。")],
+                        ),
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    FlatButton(
+                        child: const Text('キャンセル'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                    FlatButton(
+                        child: const Text('削除する'),
+                        onPressed: () {
+                          context
+                              .read<DotSiteStateNotifier>()
+                              .deleteSetting(id);
                           Navigator.pop(context);
                         })
                   ],
