@@ -16,17 +16,9 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState>
     with LocatorMixin {
   SettingRepository get _settingRepository => read();
 
-  List<int> availableRearCameraNumbers = [];
-
-  TextEditingController settingNameTextEditingController =
-      TextEditingController();
-
   DotSiteStateNotifier()
-      : super(const DotSiteState(
-          initializedController: null,
-          reticleTop: null,
-          reticleLeft: null,
-        )) {}
+      : super(DotSiteState(
+            settingNameTextEditingController: TextEditingController())) {}
 
   @override
   void initState() {
@@ -183,7 +175,7 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState>
   }
 
   void saveNowSetting() {
-    final name = settingNameTextEditingController.text;
+    final name = state.settingNameTextEditingController.text;
     if (name.isEmpty) return;
     _settingRepository
         .saveSetting(Setting(
@@ -195,7 +187,7 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState>
       reticleLeft: state.reticleLeft,
     ))
         .then((_) {
-      settingNameTextEditingController.clear();
+      state.settingNameTextEditingController.clear();
       _getAllSettings();
     });
   }
@@ -213,13 +205,16 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState>
   void _initializeCameraControllerWithCameraNumber(
       int cameraNumber, bool isRetry) {
     availableCameras().then((cameras) {
-      if (availableRearCameraNumbers.isEmpty) {
+      if (state.availableRearCameraNumbers.isEmpty) {
+        final List<int> availableRearCameraNumbers = [];
         for (int i = 0; i < cameras.length; i++) {
           final camera = cameras[i];
           if (camera.lensDirection == CameraLensDirection.back) {
             availableRearCameraNumbers.add(i);
           }
         }
+        state = state.copyWith(
+            availableRearCameraNumbers: availableRearCameraNumbers);
       }
       CameraDescription camera = cameras[cameraNumber];
       if (camera == null) {
@@ -233,7 +228,7 @@ class DotSiteStateNotifier extends StateNotifier<DotSiteState>
         }
         state = state.copyWith(
             initializedController: controller, cameraNumber: cameraNumber);
-      }).catchError((err) {
+      }).catchError((Object err) {
         if (err is CameraException) {
           if (isRetry) return;
           state = state.copyWith(

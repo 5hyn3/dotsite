@@ -66,8 +66,7 @@ class Settings extends StatelessWidget {
           context.read<DotSiteStateNotifier>().changeCamera(newValue);
         },
         items: context
-            .select((DotSiteStateNotifier value) =>
-                value.availableRearCameraNumbers)
+            .select((DotSiteState s) => s.availableRearCameraNumbers)
             .map<DropdownMenuItem<int>>((int value) {
           return DropdownMenuItem(
             value: value,
@@ -182,9 +181,8 @@ class Settings extends StatelessWidget {
                         Column(
                           children: <Widget>[
                             TextField(
-                              controller: context.select(
-                                  (DotSiteStateNotifier s) =>
-                                      s.settingNameTextEditingController),
+                              controller: context.select((DotSiteState s) =>
+                                  s.settingNameTextEditingController),
                               decoration: const InputDecoration(
                                 labelText: '設定の名前を入力してください',
                               ),
